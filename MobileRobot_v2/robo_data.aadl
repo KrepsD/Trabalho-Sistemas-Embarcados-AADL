@@ -1,0 +1,82 @@
+package robot_data
+public
+
+with Base_Types;
+
+data encoder_state
+end encoder_state;
+
+data desired_wheel_speed
+end desired_wheel_speed;
+
+data motor_drive
+end motor_drive;
+
+-- raw imu data
+data imu_raw
+end imu_raw;
+
+-- converted sample (measurement units, m/s^2 and rad/s)
+data imu_sample
+end imu_sample;
+
+-- Variacao assinada das contagens desde a leitura anterior.
+-- Um campo por roda; valores positivos representam avanco.
+-- Intervalo nominal entre leituras: 10 ms.
+data implementation encoder_state.impl
+	subcomponents
+		R_wheel_encoder: data Base_Types::Integer_16;
+		L_wheel_encoder: data Base_Types::Integer_16;
+	properties
+		Data_Size => 4 Bytes;
+end encoder_state.impl;
+
+-- Angular velocity: rad/s
+-- Positive numbers: foward
+-- Negative numbers: backwards
+data implementation desired_wheel_speed.impl
+	subcomponents
+		R_wheel_speed: data Base_Types::Float_32;
+		L_wheel_speed: data Base_Types::Float_32;
+	properties
+		Data_Size => 8 Bytes;
+end desired_wheel_speed.impl;
+
+
+-- Normalized commands between -1.0 and +1.0
+-- Signal indicates rotation direction
+-- Absolute value indicates duty cycle: 0.6 = 60%
+-- For values 0: depends on driver (h-bridge).
+data implementation motor_drive.impl
+	subcomponents
+		R_wheel_command: data Base_Types::Float_32;
+		L_wheel_command: data Base_Types::Float_32;
+	properties
+		Data_Size => 8 Bytes;
+end motor_drive.impl;
+
+data implementation imu_raw.impl
+		subcomponents
+		accel_x: data Base_Types::Integer_16;
+		accel_y: data Base_Types::Integer_16;
+		accel_z: data Base_Types::Integer_16;
+		gyro_x: data Base_Types::Integer_16;
+		gyro_y: data Base_Types::Integer_16;
+		gyro_z: data Base_Types::Integer_16;
+	properties
+		Data_Size => 12 Bytes;
+end imu_raw.impl;
+
+data implementation imu_sample.impl
+		subcomponents
+		accel_x: data Base_Types::Float_32;
+		accel_y: data Base_Types::Float_32;
+		accel_z: data Base_Types::Float_32;
+		gyro_x: data Base_Types::Float_32;
+		gyro_y: data Base_Types::Float_32;
+		gyro_z: data Base_Types::Float_32;
+	properties
+		Data_Size => 24 Bytes;
+end imu_sample.impl;
+
+end robot_data;

@@ -1,0 +1,41 @@
+Latency analysis with preference settings: asynchronous system/partition end/worst case as deadline/best case as empty queue/queuing latency enabled
+
+"Latency results for end-to-end flow 'imu_activation_to_result' of system 'robot.impl' "
+
+Result,Min Specified,Min Actual,Min Method,Max Specified,Max Actual,Max Method,Comments
+thread controller_firmware.imu_task (source converted_source),0.0ms,0.0ms,first sampling,0.0ms,0.0ms,first sampling
+thread controller_firmware.imu_task (source converted_source),0.0ms,4.53ms,response time,0.0ms,9.53ms,response time
+connection controller_firmware.imu_task.conversion -> imu_result.sample,0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency
+abstract imu_result (sink received),0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency
+Latency Total,0.0ms,4.53ms,,0.0ms,9.53ms
+Specified End To End Latency,,0.0ms,,,20.0ms
+End to end Latency Summary
+INFO,Minimum actual latency total 4,53ms is greater or equal to expected minimum end to end latency 0,000ms
+INFO,Maximum actual latency total 9,53ms is less or equal to expected maximum end to end latency 20,0ms
+INFO,Jitter of actual flow latency 4,53..9,53ms is within expected end to end latency jitter 0,000..20,0ms
+
+
+
+"Latency results for end-to-end flow 'filtered_imu_to_serial' of system 'robot.impl' "
+
+Result,Min Specified,Min Actual,Min Method,Max Specified,Max Actual,Max Method,Comments
+thread controller_firmware.filter_task (source filtered_source),0.0ms,0.0ms,first sampling,0.0ms,0.0ms,first sampling
+thread controller_firmware.filter_task (source filtered_source),0.0ms,0.5ms,processing time,0.0ms,20.0ms,deadline
+connection filter_task.filtered -> telemetry_task.imu,0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency
+thread controller_firmware.telemetry_task (path telemetry_path),0.0ms,0.0ms,sampling,0.0ms,0.0ms,sampling,Min: Best case: 0 ms sampling delay,Synchronous communication on same platform,Max: Worst case: Round up sampling delay to period 20.0ms
+thread controller_firmware.telemetry_task (path telemetry_path),0.0ms,0.5ms,processing time,0.0ms,20.0ms,deadline
+(bus serial_link),0.0ms,4.6979999999999995ms,transmission time,0.0ms,4.6979999999999995ms,transmission time,Using data transfer time
+(bus serial_link),0.0ms,0.0ms,queued,0.0ms,0.0ms,queued
+(bus serial_link),0.0ms,0.0ms,sampling protocol/bus,0.0ms,0.0ms,sampling protocol/bus
+connection controller_firmware.telemetry_task.frame -> peer.telemetry,0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency,Adding latency subtotal from protocols and hardware - shown with ()
+device peer (sink telemetry_sink),0.0ms,0.0ms,queued,0.0ms,0.0ms,queued,Assume best case empty queue
+device peer (sink telemetry_sink),0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency
+Latency Total,0.0ms,5.698ms,,0.0ms,44.698ms
+Specified End To End Latency,,0.0ms,,,100.0ms
+End to end Latency Summary
+INFO,Minimum actual latency total 5,70ms is greater or equal to expected minimum end to end latency 0,000ms
+INFO,Maximum actual latency total 44,7ms is less or equal to expected maximum end to end latency 100,0ms
+INFO,Jitter of actual flow latency 5,70..44,7ms is within expected end to end latency jitter 0,000..100,0ms
+
+
+

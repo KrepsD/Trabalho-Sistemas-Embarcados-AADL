@@ -1,0 +1,11 @@
+Bus load analysis of robot_impl_Instance
+
+
+"Physical Bus","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"imu_i2c","12.5","2.5","1.0","0.6"
+
+"Bus imu_i2c has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"imu.state -> controller_firmware.imu_task.aquisition","","1.0","","0.6"
+
+

@@ -1,0 +1,35 @@
+Latency analysis with preference settings: asynchronous system/partition end/worst case as deadline/best case as empty queue/queuing latency enabled
+
+"Latency results for end-to-end flow 'imu_acquisition_e2e' of system 'robot.impl' "
+
+Result,Min Specified,Min Actual,Min Method,Max Specified,Max Actual,Max Method,Comments
+device imu (source measurement_source),0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency
+(bus imu_i2c),0.0ms,1.53ms,transmission time,0.0ms,1.53ms,transmission time,Using data transfer time
+(bus imu_i2c),0.0ms,0.0ms,queued,0.0ms,0.0ms,queued
+(bus imu_i2c),0.0ms,0.0ms,sampling protocol/bus,0.0ms,0.0ms,sampling protocol/bus
+connection imu.state -> controller_firmware.imu_task.aquisition,0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency,Adding latency subtotal from protocols and hardware - shown with ()
+thread controller_firmware.imu_task (sink measurement_sink),0.0ms,0.0ms,sampling,0.0ms,20.0ms,sampling,Best case 0 ms worst case 20.0ms (period) sampling delay
+thread controller_firmware.imu_task (sink measurement_sink),0.0ms,4.53ms,response time,0.0ms,9.53ms,response time
+Latency Total,0.0ms,6.06ms,,0.0ms,31.06ms
+Specified End To End Latency,,0.0ms,,,0.0ms
+End to end Latency Summary
+WARNING,Expected end to end latency is not specified
+
+
+
+"Latency results for end-to-end flow 'imu_activation_to_result' of system 'robot.impl' "
+
+Result,Min Specified,Min Actual,Min Method,Max Specified,Max Actual,Max Method,Comments
+thread controller_firmware.imu_task (source converted_source),0.0ms,0.0ms,first sampling,0.0ms,0.0ms,first sampling
+thread controller_firmware.imu_task (source converted_source),0.0ms,4.53ms,response time,0.0ms,9.53ms,response time
+connection controller_firmware.imu_task.conversion -> imu_result.sample,0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency
+abstract imu_result (sink received),0.0ms,0.0ms,no sampling/queuing latency,0.0ms,0.0ms,no sampling/queuing latency
+Latency Total,0.0ms,4.53ms,,0.0ms,9.53ms
+Specified End To End Latency,,0.0ms,,,20.0ms
+End to end Latency Summary
+INFO,Minimum actual latency total 4,53ms is greater or equal to expected minimum end to end latency 0,000ms
+INFO,Maximum actual latency total 9,53ms is less or equal to expected maximum end to end latency 20,0ms
+INFO,Jitter of actual flow latency 4,53..9,53ms is within expected end to end latency jitter 0,000..20,0ms
+
+
+

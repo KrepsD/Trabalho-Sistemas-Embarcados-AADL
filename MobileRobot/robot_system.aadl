@@ -1,0 +1,47 @@
+package robot_system
+public
+
+with esp32_hardware;
+with esp32_software;
+with robot_data;
+
+-- The speed reference origin is unknown for now (it will be received from raspberry)
+system robot
+	features
+		speed_reference: in data port robot_data::desired_wheel_speed.impl;
+end robot;
+
+system implementation robot.impl
+	subcomponents
+		controller_board: system esp32_hardware::esp_platform.impl;
+		controller_firmware: process esp32_software::firmware.impl;
+		encoders: device esp32_hardware::wheel_encoders;
+		actuation: device esp32_hardware::motor_actuation;
+		imu: device esp32_hardware::IMU;
+		
+    connections
+    	encoder_to_firmware:
+    	port encoders.state -> controller_firmware.encoder_input;
+
+		firmware_to_actuation:
+    	port controller_firmware.motor_output -> actuation.command;
+    	
+    	reference_to_firmware:
+    	port speed_reference -> controller_firmware.speed_reference;
+    	
+    	imu_to_firmware:
+    	port imu.state -> controller_firmware.aquisition;
+		
+	properties
+		Actual_Processor_Binding =>
+    	(reference (controller_board.core_1))
+    	applies to controller_firmware.control_task;
+    	
+    	Actual_Processor_Binding =>
+    	(reference (controller_board.core_1))
+    	applies to controller_firmware.imu_task;
+    	
+    	
+end robot.impl;
+
+end robot_system;

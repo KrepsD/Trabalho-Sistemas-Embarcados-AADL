@@ -1,0 +1,179 @@
+package robot_data
+public
+
+with Base_Types;
+
+data encoder_state
+end encoder_state;
+
+data desired_wheel_speed
+end desired_wheel_speed;
+
+data motor_drive
+end motor_drive;
+
+-- raw imu data
+data imu_raw
+end imu_raw;
+
+-- converted sample (measurement units, m/s^2 and rad/s)
+data imu_sample
+end imu_sample;
+
+-- Variacao assinada das contagens desde a leitura anterior.
+-- Um campo por roda; valores positivos representam avanco.
+-- Intervalo nominal entre leituras: 10 ms.
+data implementation encoder_state.impl
+	subcomponents
+		R_wheel_encoder: data Base_Types::Integer_16;
+		L_wheel_encoder: data Base_Types::Integer_16;
+	properties
+		Data_Size => 4 Bytes;
+end encoder_state.impl;
+
+-- Angular velocity: rad/s
+-- Positive numbers: foward
+-- Negative numbers: backwards
+data implementation desired_wheel_speed.impl
+	subcomponents
+		R_wheel_speed: data Base_Types::Float_32;
+		L_wheel_speed: data Base_Types::Float_32;
+	properties
+		Data_Size => 8 Bytes;
+end desired_wheel_speed.impl;
+
+
+-- Normalized commands between -1.0 and +1.0
+-- Signal indicates rotation direction
+-- Absolute value indicates duty cycle: 0.6 = 60%
+-- For values 0: depends on driver (h-bridge).
+data implementation motor_drive.impl
+	subcomponents
+		R_wheel_command: data Base_Types::Float_32;
+		L_wheel_command: data Base_Types::Float_32;
+	properties
+		Data_Size => 8 Bytes;
+end motor_drive.impl;
+
+data implementation imu_raw.impl
+		subcomponents
+		accel_x: data Base_Types::Integer_16;
+		accel_y: data Base_Types::Integer_16;
+		accel_z: data Base_Types::Integer_16;
+		gyro_x: data Base_Types::Integer_16;
+		gyro_y: data Base_Types::Integer_16;
+		gyro_z: data Base_Types::Integer_16;
+	properties
+		Data_Size => 12 Bytes;
+end imu_raw.impl;
+
+data implementation imu_sample.impl
+		subcomponents
+		accel_x: data Base_Types::Float_32;
+		accel_y: data Base_Types::Float_32;
+		accel_z: data Base_Types::Float_32;
+		gyro_x: data Base_Types::Float_32;
+		gyro_y: data Base_Types::Float_32;
+		gyro_z: data Base_Types::Float_32;
+	properties
+		Data_Size => 24 Bytes;
+end imu_sample.impl;
+
+-- adicionado pelo GPT Astra
+-- These declarations describe contracts, not executable firmware algorithms.
+-- Data_Size for frames is the packed wire size, not a C structure sizeof.
+-- Serialization must explicitly encode little-endian integers and IEEE754 floats.
+data encoder_totals
+end encoder_totals;
+
+data battery_raw
+end battery_raw;
+
+data battery_state
+end battery_state;
+
+data command_frame
+end command_frame;
+
+data validated_command
+end validated_command;
+
+data telemetry_frame
+end telemetry_frame;
+
+-- Signed cumulative counts avoid losing 10 ms deltas in 20 ms telemetry.
+-- Firmware and receiver must handle counter wrap and reset explicitly.
+data implementation encoder_totals.impl
+	subcomponents
+		R_wheel_total: data Base_Types::Integer_32;
+		L_wheel_total: data Base_Types::Integer_32;
+	properties
+		Data_Size => 8 Bytes;
+end encoder_totals.impl;
+
+-- ADC count: provisional 12-bit configuration, range 0 .. 4095.
+data implementation battery_raw.impl
+	subcomponents
+		adc_count: data Base_Types::Unsigned_16;
+	properties
+		Data_Size => 2 Bytes;
+end battery_raw.impl;
+
+-- Battery terminal voltage in volts, not state of charge.
+-- Status bit 0 means valid; other bits are reserved and initially zero.
+-- Divider ratio, ADC attenuation and calibration require actual hardware values.
+data implementation battery_state.impl
+	subcomponents
+		voltage: data Base_Types::Float_32;
+		adc_count: data Base_Types::Unsigned_16;
+		status: data Base_Types::Unsigned_16;
+	properties
+		Data_Size => 8 Bytes;
+end battery_state.impl;
+
+-- Proposed 20-byte command frame; adapt to Javino. Little-endian; sync=0xA55A.
+-- Length includes frame; CRC-16/CCITT-FALSE covers preceding bytes; TTL 1..100 ms.
+-- Sequence uses modulo-2^32 ordering; define reconnection handling in firmware.
+data implementation command_frame.impl
+	subcomponents
+		sync: data Base_Types::Unsigned_16;
+		length: data Base_Types::Unsigned_16;
+		sequence: data Base_Types::Unsigned_32;
+		speed: data desired_wheel_speed.impl;
+		validity_ms: data Base_Types::Unsigned_16;
+		crc: data Base_Types::Unsigned_16;
+	properties
+		Data_Size => 20 Bytes;
+end command_frame.impl;
+
+-- Internal command state: local reception timestamp before queueing, wrap-safe elapsed time.
+-- Initialize invalid; rejected frames must not refresh command validity.
+data implementation validated_command.impl
+	subcomponents
+		speed: data desired_wheel_speed.impl;
+		sequence: data Base_Types::Unsigned_32;
+		received_at_ms: data Base_Types::Unsigned_32;
+		validity_ms: data Base_Types::Unsigned_16;
+		valid: data Base_Types::Unsigned_16;
+	properties
+		Data_Size => 20 Bytes;
+end validated_command.impl;
+
+-- 54-byte packed telemetry frame, same framing/CRC as commands; no byte-stuffing.
+-- Latest sensor values; assembly timestamp does not imply synchronized acquisition.
+data implementation telemetry_frame.impl
+	subcomponents
+		sync: data Base_Types::Unsigned_16;
+		length: data Base_Types::Unsigned_16;
+		sequence: data Base_Types::Unsigned_32;
+		assembled_at_ms: data Base_Types::Unsigned_32;
+		encoders: data encoder_totals.impl;
+		imu: data imu_sample.impl;
+		battery: data battery_state.impl;
+		crc: data Base_Types::Unsigned_16;
+	properties
+		Data_Size => 54 Bytes;
+end telemetry_frame.impl;
+-- Adicionado pelo GPT Astra.
+
+end robot_data;

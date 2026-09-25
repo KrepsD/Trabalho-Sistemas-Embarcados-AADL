@@ -1,0 +1,94 @@
+package robot_system
+public
+
+with esp32_hardware;
+with esp32_software;
+with robot_data;
+with SEI;
+
+abstract imu_result_observer
+    features
+        sample: in data port robot_data::imu_sample.impl;
+    flows
+        received: flow sink sample
+            { Latency => 0 ms .. 0 ms; };
+end imu_result_observer;
+
+-- The speed reference origin is unknown for now (it will be received from raspberry)
+system robot
+	features
+		speed_reference: in data port robot_data::desired_wheel_speed.impl;
+end robot;
+
+system implementation robot.impl
+	subcomponents
+		controller_board: system esp32_hardware::esp_platform.impl;
+		controller_firmware: process esp32_software::firmware.impl;
+		encoders: device esp32_hardware::wheel_encoders;
+		actuation: device esp32_hardware::motor_actuation;
+		imu: device esp32_hardware::IMU;
+		imu_i2c: bus esp32_hardware::I2C;
+		imu_result: abstract imu_result_observer;
+		
+    connections
+    	encoder_to_firmware:
+    	port encoders.state -> controller_firmware.encoder_input;
+
+		firmware_to_actuation:
+    	port controller_firmware.motor_output -> actuation.command;
+    	
+    	reference_to_firmware:
+    	port speed_reference -> controller_firmware.speed_reference;
+    	
+    	imu_to_firmware:
+    	port imu.state -> controller_firmware.aquisition;
+    	
+    	imu_i2c_access:
+    	bus access imu.i2c_access <-> imu_i2c;
+		
+		board_i2c_access:
+    	bus access controller_board.i2c_access <-> imu_i2c;
+    		
+    	converted_to_observer:
+    	port controller_firmware.conversion -> imu_result.sample;
+    		 		
+    flows
+        imu_activation_to_result: end to end flow
+    	controller_firmware.converted_output_flow ->
+    	converted_to_observer ->
+    	imu_result.received;
+		
+	properties
+		Actual_Processor_Binding =>
+    	(reference (controller_board.core_1))
+    	applies to controller_firmware.control_task;
+    	
+    	Actual_Processor_Binding =>
+    	(reference (controller_board.core_1))
+    	applies to controller_firmware.imu_task;
+    	
+    	Actual_Connection_Binding =>
+    	(reference (imu_i2c))
+    	applies to imu_to_firmware;
+    	
+    	Communication_Properties::Transmission_Type => pull
+    	applies to imu_to_firmware;
+    	
+    	-- Chosen arbitrarily
+    	SEI::BandWidthBudget => 8000.0 bitsps
+    	applies to imu_to_firmware;
+    	
+    	-- 1 sample read every 20ms: value range 50.0
+    	Communication_Properties::Output_Rate =>
+    	[Value_Range => 50.0 .. 50.0;
+     	Rate_Unit => PerSecond;
+     	Rate_Distribution => Fixed;]
+    	applies to imu.state;
+    	
+    	Latency => 0 ms .. 20 ms
+    	applies to imu_activation_to_result;
+    	
+    	
+end robot.impl;
+
+end robot_system;

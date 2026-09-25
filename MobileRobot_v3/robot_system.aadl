@@ -1,0 +1,156 @@
+package robot_system
+public
+
+with esp32_hardware;
+with esp32_software;
+with robot_data;
+with SEI;
+
+abstract imu_result_observer
+    features
+        sample: in data port robot_data::imu_sample.impl;
+    flows
+        received: flow sink sample
+            { Latency => 0 ms .. 0 ms; };
+end imu_result_observer;
+
+-- adicionado pelo GPT Astra
+-- The serial peer represents the external environment, without modeling ROS2.
+-- Commands now enter through framed serial reception and the freshness guard.
+system robot
+end robot;
+-- Adicionado pelo GPT Astra.
+
+system implementation robot.impl
+	subcomponents
+		controller_board: system esp32_hardware::esp_platform.impl;
+		controller_firmware: process esp32_software::firmware.impl;
+		encoders: device esp32_hardware::wheel_encoders;
+		actuation: device esp32_hardware::motor_actuation;
+		imu: device esp32_hardware::IMU;
+		imu_i2c: bus esp32_hardware::I2C;
+		imu_result: abstract imu_result_observer;
+		-- adicionado pelo GPT Astra
+		battery: device esp32_hardware::battery_sensor;
+		serial_link: bus esp32_hardware::UART;
+		peer: device esp32_hardware::serial_peer;
+		-- Adicionado pelo GPT Astra.
+
+		
+    connections
+    	encoder_to_firmware:
+    	port encoders.state -> controller_firmware.encoder_input;
+
+		firmware_to_actuation:
+    	port controller_firmware.motor_output -> actuation.command;
+    	
+		-- adicionado pelo GPT Astra
+		commands_to_firmware:
+		port peer.commands -> controller_firmware.command_input;
+
+		telemetry_to_peer:
+		port controller_firmware.telemetry_output -> peer.telemetry;
+
+		battery_to_firmware:
+		port battery.state -> controller_firmware.battery_input;
+
+		board_serial_access:
+		bus access controller_board.serial_access <-> serial_link;
+
+		peer_serial_access:
+		bus access peer.serial_access <-> serial_link;
+		-- Adicionado pelo GPT Astra.
+    	
+    	imu_to_firmware:
+    	port imu.state -> controller_firmware.aquisition;
+    	
+    	imu_i2c_access:
+    	bus access imu.i2c_access <-> imu_i2c;
+		
+		board_i2c_access:
+    	bus access controller_board.i2c_access <-> imu_i2c;
+    		
+    	converted_to_observer:
+    	port controller_firmware.conversion -> imu_result.sample;
+    		 		
+    flows
+        imu_activation_to_result: end to end flow
+    	controller_firmware.converted_output_flow ->
+    	converted_to_observer ->
+    	imu_result.received;
+		-- adicionado pelo GPT Astra
+		-- Separate telemetry path, including the UART transfer to the external peer.
+		filtered_imu_to_serial: end to end flow
+		controller_firmware.telemetry_output_flow ->
+		telemetry_to_peer -> peer.telemetry_sink;
+		-- Adicionado pelo GPT Astra.
+
+		
+	properties
+		-- adicionado pelo GPT Astra
+		-- Auxiliary tasks use core_0; IMU with integrated filter uses core_1.
+		-- This is partitioned scheduling, not unrestricted Zephyr SMP migration.
+		-- Existing IMU response bounds remain assumptions, excluding shared contention.
+		Actual_Processor_Binding =>
+		(reference (controller_board.core_0))
+		applies to controller_firmware.battery_task,
+		controller_firmware.telemetry_task,
+		controller_firmware.rx_task,
+		controller_firmware.command_guard_task;
+
+		Actual_Connection_Binding => (reference (serial_link))
+		applies to commands_to_firmware, telemetry_to_peer;
+
+		-- UART 115200 bit/s, 8N1; 87 us/byte (rounded up), without driver/USB delays.
+		-- Aggregate full-duplex budget: 80000 bit/s, provisionally allocated.
+		SEI::BandWidthBudget => 35000.0 bitsps applies to telemetry_to_peer;
+		SEI::BandWidthBudget => 15000.0 bitsps applies to commands_to_firmware;
+
+		Communication_Properties::Output_Rate =>
+		[Value_Range => 0.0 .. 50.0;
+		 Rate_Unit => PerSecond;
+		 Rate_Distribution => Fixed;] applies to peer.commands;
+
+		Communication_Properties::Output_Rate =>
+		[Value_Range => 2.0 .. 2.0;
+		 Rate_Unit => PerSecond;
+		 Rate_Distribution => Fixed;] applies to battery.state;
+		-- Adicionado pelo GPT Astra.
+		Actual_Processor_Binding =>
+    	(reference (controller_board.core_1))
+    	applies to controller_firmware.control_task;
+    	
+    	Actual_Processor_Binding =>
+    	(reference (controller_board.core_1))
+    	applies to controller_firmware.imu_task;
+    	
+    	Actual_Connection_Binding =>
+    	(reference (imu_i2c))
+    	applies to imu_to_firmware;
+    	
+    	Communication_Properties::Transmission_Type => pull
+    	applies to imu_to_firmware;
+    	
+    	-- Chosen arbitrarily
+    	SEI::BandWidthBudget => 8000.0 bitsps
+    	applies to imu_to_firmware;
+    	
+    	-- 1 sample read every 20ms: value range 50.0
+    	Communication_Properties::Output_Rate =>
+    	[Value_Range => 50.0 .. 50.0;
+     	Rate_Unit => PerSecond;
+     	Rate_Distribution => Fixed;]
+    	applies to imu.state;
+    	
+		-- adicionado pelo GPT Astra
+		-- Provisional 100 ms limit: IMU task activation to serial delivery.
+		-- Includes acquisition/filtering; excludes host processing and filter phase lag.
+		Latency => 0 ms .. 100 ms applies to filtered_imu_to_serial;
+		-- Adicionado pelo GPT Astra.
+    	Latency => 0 ms .. 20 ms
+    	applies to imu_activation_to_result;
+    	
+    	
+end robot.impl;
+
+end robot_system;

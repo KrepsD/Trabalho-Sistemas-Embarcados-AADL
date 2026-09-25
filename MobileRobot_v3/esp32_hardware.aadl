@@ -1,0 +1,130 @@
+package esp32_hardware
+public
+
+--Obtained from Provant implementation processor_properties.aadl
+with Processor_Properties;
+with robot_data;
+with SEI;
+
+processor cpu
+	features
+    	i2c_access: requires bus access I2C;
+		-- adicionado pelo GPT Astra
+		serial_access: requires bus access UART;
+		-- Adicionado pelo GPT Astra.
+
+	properties    
+		Scheduling_Protocol=>(POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
+		Processor_Properties::Processor_Frequency => 240 MHz;
+end cpu;
+
+-- Considering an MPU-6050 IMU at 100 kHz
+-- message has 12 bytes (accelerometer and gyroscope), so (450 + 12*90)
+-- fixed includes 3 bytes from protocol and 2 bytes from temperature reading, that is not being used
+-- It doesnt model wait time and adicional time due to START/STOP of I2C 
+bus I2C
+	properties
+		-- Nominal capacity for 100 kHz SCL (channel that sends data)
+		SEI::BandWidthCapacity => 100000.0 bitsps;
+		-- Chosen arbitrarily: 20% of nominal capacity
+		SEI::BandWidthBudget => 20000.0 bitsps;
+		
+		Communication_Properties::Transmission_Time =>
+    	[Fixed => 450 us .. 450 us;
+     	PerByte => 90 us .. 90 us;];
+end I2C;
+
+-- adicionado pelo GPT Astra
+-- UART 115200 bit/s, 8N1; 87 us/byte (rounded up), without driver/USB delays.
+-- Aggregate full-duplex budget: 80000 bit/s, provisionally allocated.
+bus UART
+	properties
+		SEI::BandWidthCapacity => 115200.0 bitsps;
+		SEI::BandWidthBudget => 80000.0 bitsps;
+		Communication_Properties::Transmission_Time =>
+		[Fixed => 0 us .. 0 us;
+		 PerByte => 87 us .. 87 us;];
+end UART;
+
+-- Abstract voltage-divider + ADC acquisition interface, not an external bus.
+-- Electrical scaling and ADC calibration are intentionally not guessed.
+device battery_sensor
+	features
+		state: out data port robot_data::battery_raw.impl;
+end battery_sensor;
+
+-- External serial peer only; Raspberry hardware and ROS2 are not modeled yet.
+-- The environment must limit command traffic to at most one frame per 20 ms.
+-- AADL frames abstract the real UART byte stream and its driver/framing buffer.
+device serial_peer
+	features
+		commands: out event data port robot_data::command_frame.impl;
+		telemetry: in event data port robot_data::telemetry_frame.impl
+		{ Queue_Size => 1;
+		  Overflow_Handling_Protocol => DropOldest; };
+		serial_access: requires bus access UART;
+	flows
+		command_source: flow source commands;
+		telemetry_sink: flow sink telemetry;
+end serial_peer;
+-- Adicionado pelo GPT Astra.
+
+memory ram
+	properties
+		Memory_Size => 520 KByte;
+end ram;
+
+memory flash
+	properties
+		Memory_Size => 4 MByte;
+end flash;
+
+device wheel_encoders
+	features
+		state: out data port robot_data::encoder_state.impl;
+end wheel_encoders;
+
+device motor_actuation
+	features
+		command: in data port robot_data::motor_drive.impl;
+end motor_actuation;
+
+device IMU
+	features
+		state: out data port robot_data::imu_raw.impl;
+		i2c_access: requires bus access I2C;
+	flows
+        measurement_source: flow source state;
+end IMU;
+
+system esp_platform
+	features
+		i2c_access: requires bus access I2C;
+		-- adicionado pelo GPT Astra
+		serial_access: requires bus access UART;
+		-- Adicionado pelo GPT Astra.
+
+end esp_platform;
+
+system implementation esp_platform.impl
+ 	subcomponents
+ 		esp_memory : memory ram;
+		core_0 : processor cpu;
+		core_1: processor cpu;
+		esp_flash : memory flash;
+	connections
+		-- adicionado pelo GPT Astra
+		-- UART driver work is allocated to core_0.
+		serial_to_core_0:
+			bus access serial_access <-> core_0.serial_access;
+		-- Adicionado pelo GPT Astra.
+		i2c_to_core_0:
+        	bus access i2c_access <-> core_0.i2c_access;
+
+    	i2c_to_core_1:
+        	bus access i2c_access <-> core_1.i2c_access;
+
+		
+end esp_platform.impl;
+
+end esp32_hardware;

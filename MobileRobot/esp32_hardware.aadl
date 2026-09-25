@@ -1,0 +1,53 @@
+package esp32_hardware
+public
+
+--Obtained from Provant implementation processor_properties.aadl
+with Processor_Properties;
+with robot_data;
+
+processor cpu
+	properties    
+		Scheduling_Protocol=>(POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
+		Processor_Properties::Processor_Frequency => 240 MHz;
+end cpu;
+
+
+memory ram
+	properties
+		Memory_Size => 520 KByte;
+end ram;
+
+memory flash
+	properties
+		Memory_Size => 4 MByte;
+end flash;
+
+device wheel_encoders
+	features
+		state: out data port robot_data::encoder_state.impl;
+end wheel_encoders;
+
+device motor_actuation
+	features
+		command: in data port robot_data::motor_drive.impl;
+end motor_actuation;
+
+device IMU
+	features
+		state: out data port robot_data::imu_raw.impl;
+end IMU;
+
+system esp_platform
+end esp_platform;
+
+system implementation esp_platform.impl
+ 	subcomponents
+ 		esp_memory : memory ram;
+		core_0 : processor cpu;
+		core_1: processor cpu;
+		esp_flash : memory flash;
+
+		
+end esp_platform.impl;
+
+end esp32_hardware;

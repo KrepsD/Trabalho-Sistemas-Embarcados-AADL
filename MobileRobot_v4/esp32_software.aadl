@@ -1,0 +1,181 @@
+package esp32_software
+public
+
+with robot_data;
+with SEI;
+
+
+process firmware
+	features
+		encoder_input : in data port robot_data::encoder_state.impl;
+
+		command_input: in event data port robot_data::command_frame.impl
+		{ Queue_Size => 1;
+		  Overflow_Handling_Protocol => DropOldest; };
+		battery_input: in data port robot_data::battery_raw.impl;
+		telemetry_output: out event data port robot_data::telemetry_frame.impl;
+
+  		motor_output : out data port robot_data::motor_drive.impl;
+  		aquisition : in data port robot_data::imu_raw.impl;
+  		conversion : out data port robot_data::imu_sample.impl;
+  	flows
+    	imu_input_flow: flow sink aquisition;
+    	converted_output_flow: flow source conversion;
+
+		telemetry_output_flow: flow source telemetry_output;
+
+end firmware;
+	
+thread motor_control
+	features
+		encoder_input : in data port robot_data::encoder_state.impl;
+  		speed_reference : in data port robot_data::desired_wheel_speed.impl;
+  		motor_output : out data port robot_data::motor_drive.impl;
+
+		encoder_snapshot: out data port robot_data::encoder_totals.impl;
+
+end motor_control;
+
+thread IMU_aquisition_conversion
+	features
+		aquisition : in data port robot_data::imu_raw.impl;
+  		conversion : out data port robot_data::imu_sample.impl;
+  	flows
+        measurement_sink: flow sink aquisition;
+        converted_source: flow source conversion;
+end IMU_aquisition_conversion;
+
+subprogram read_imu
+end read_imu;
+
+subprogram convert_imu
+end convert_imu;
+
+
+subprogram filter_imu
+end filter_imu;
+
+
+thread implementation IMU_aquisition_conversion.impl
+    calls
+        acquisition_sequence: {
+            read_sensor: subprogram read_imu;
+            convert_sample: subprogram convert_imu;
+
+            filter_sample: subprogram filter_imu;
+
+        };
+end IMU_aquisition_conversion.impl;
+
+
+thread battery_acquisition
+	features
+		raw: in data port robot_data::battery_raw.impl;
+		state: out data port robot_data::battery_state.impl;
+	properties
+		Dispatch_Protocol => Periodic;
+end battery_acquisition;
+
+thread telemetry_transmission
+	features
+		imu: in data port robot_data::imu_sample.impl;
+		battery: in data port robot_data::battery_state.impl;
+		encoders: in data port robot_data::encoder_totals.impl;
+		frame: out event data port robot_data::telemetry_frame.impl;
+	flows
+		telemetry_path: flow path imu -> frame;
+	properties
+		Communication_Properties::Output_Rate =>
+		[Value_Range => 50.0 .. 50.0;
+		 Rate_Unit => PerSecond;
+		 Rate_Distribution => Fixed;] applies to frame;
+end telemetry_transmission;
+
+thread command_reception
+	features
+		frame: in event data port robot_data::command_frame.impl
+		{ Queue_Size => 1;
+		  Overflow_Handling_Protocol => DropOldest; };
+		accepted: out data port robot_data::validated_command.impl;
+end command_reception;
+
+thread command_guard
+	features
+		command: in data port robot_data::validated_command.impl;
+		speed_reference: out data port robot_data::desired_wheel_speed.impl;
+end command_guard;
+
+process implementation firmware.impl
+	subcomponents
+  		control_task : thread motor_control
+    	{ Dispatch_Protocol => Periodic;
+      	Compute_Execution_Time => 5 ms .. 5 ms;    
+      	Period => 10 ms;
+      	Priority => 30;
+      	Deadline => 10 ms; };
+      	
+		imu_task: thread IMU_aquisition_conversion.impl
+		{ Dispatch_Protocol => Periodic;
+
+		  Compute_Execution_Time => 3500 us .. 3500 us;
+		  Period => 20 ms;
+		  Priority => 20;
+		  Deadline => 20 ms;
+		  SEI::Response_Time => 5030 us .. 15030 us; };
+
+		battery_task: thread battery_acquisition
+		{ Compute_Execution_Time => 200 us .. 200 us;
+		  Period => 500 ms;
+		  Priority => 10;
+		  Deadline => 500 ms; };
+
+		telemetry_task: thread telemetry_transmission
+		{ Dispatch_Protocol => Periodic;
+		  Compute_Execution_Time => 500 us .. 500 us;
+		  Period => 20 ms;
+		  Priority => 15;
+		  Deadline => 20 ms; };
+
+		rx_task: thread command_reception
+		{ Dispatch_Protocol => Sporadic;
+		  Compute_Execution_Time => 500 us .. 500 us;
+		  Period => 20 ms;
+		  Priority => 30;
+		  Deadline => 20 ms; };
+
+		command_guard_task: thread command_guard
+		{ Dispatch_Protocol => Periodic;
+		  Compute_Execution_Time => 100 us .. 100 us;
+		  Period => 10 ms;
+		  Priority => 40;
+		  Deadline => 10 ms; };
+
+	connections
+  		C0 : port encoder_input -> control_task.encoder_input;
+		C1 : port command_guard_task.speed_reference -> control_task.speed_reference;
+  		C2 : port control_task.motor_output -> motor_output;
+  		C3 : port aquisition -> imu_task.aquisition;
+  		C4 : port imu_task.conversion -> conversion;
+		imu_to_telemetry: port imu_task.conversion -> telemetry_task.imu;
+		battery_to_task: port battery_input -> battery_task.raw;
+		battery_to_telemetry: port battery_task.state -> telemetry_task.battery;
+		encoders_to_telemetry: port control_task.encoder_snapshot -> telemetry_task.encoders;
+		telemetry_to_output: port telemetry_task.frame -> telemetry_output;
+		command_to_rx: port command_input -> rx_task.frame;
+		rx_to_guard: port rx_task.accepted -> command_guard_task.command;
+
+
+  	flows
+    	imu_input_flow: flow sink
+        aquisition -> C3 -> imu_task.measurement_sink;      
+        converted_output_flow: flow source
+    	imu_task.converted_source -> C4 -> conversion;
+		telemetry_output_flow: flow source
+		imu_task.converted_source -> imu_to_telemetry ->
+		telemetry_task.telemetry_path -> telemetry_to_output -> telemetry_output;
+
+
+end firmware.impl;
+
+
+end esp32_software;

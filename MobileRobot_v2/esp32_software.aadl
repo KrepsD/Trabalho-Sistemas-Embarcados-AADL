@@ -1,0 +1,86 @@
+package esp32_software
+public
+
+with robot_data;
+with SEI;
+
+process firmware
+	features
+		encoder_input : in data port robot_data::encoder_state.impl;
+  		speed_reference : in data port robot_data::desired_wheel_speed.impl;
+  		motor_output : out data port robot_data::motor_drive.impl;
+  		aquisition : in data port robot_data::imu_raw.impl;
+  		conversion : out data port robot_data::imu_sample.impl;
+  	flows
+    	imu_input_flow: flow sink aquisition;
+    	converted_output_flow: flow source conversion;
+end firmware;
+	
+	
+thread motor_control
+	features
+		encoder_input : in data port robot_data::encoder_state.impl;
+  		speed_reference : in data port robot_data::desired_wheel_speed.impl;
+  		motor_output : out data port robot_data::motor_drive.impl;
+end motor_control;
+
+thread IMU_aquisition_conversion
+	features
+		aquisition : in data port robot_data::imu_raw.impl;
+  		conversion : out data port robot_data::imu_sample.impl;
+  	flows
+        measurement_sink: flow sink aquisition;
+        converted_source: flow source conversion;
+end IMU_aquisition_conversion;
+
+subprogram read_imu
+end read_imu;
+
+subprogram convert_imu
+end convert_imu;
+
+thread implementation IMU_aquisition_conversion.impl
+    calls
+        acquisition_sequence: {
+            read_sensor: subprogram read_imu;
+            convert_sample: subprogram convert_imu;
+        };
+end IMU_aquisition_conversion.impl;
+
+process implementation firmware.impl
+	subcomponents
+  		control_task : thread motor_control
+    	{ Dispatch_Protocol => Periodic;
+      	Compute_Execution_Time => 5 ms .. 5 ms;    
+      	Period => 10 ms;
+      	Priority => 30;
+      	Deadline => 10 ms; };
+      	
+      	imu_task: thread IMU_aquisition_conversion.impl
+    	{ Dispatch_Protocol => Periodic;
+      	Compute_Execution_Time => 3 ms .. 3 ms;    
+      	Period => 20 ms;
+      	Priority => 20;
+      	Deadline => 20 ms;
+      	-- Cenario preliminar:
+		-- 3 ms de CPU + 1.53 ms de espera I2C.
+		-- Resposta maxima estimada com interferencia do controle.
+		-- Nao inclui custos adicionais do driver, interrupcoes ou falhas.
+      	SEI::Response_Time => 4530 us .. 9530 us; };
+	connections
+  		C0 : port encoder_input -> control_task.encoder_input;
+  		C1 : port speed_reference -> control_task.speed_reference;
+  		C2 : port control_task.motor_output -> motor_output;
+  		C3 : port aquisition -> imu_task.aquisition;
+  		C4 : port imu_task.conversion -> conversion;
+  	flows
+    	imu_input_flow: flow sink
+        aquisition -> C3 -> imu_task.measurement_sink;
+        
+        converted_output_flow: flow source
+    	imu_task.converted_source -> C4 -> conversion;
+
+end firmware.impl;
+
+
+end esp32_software;
