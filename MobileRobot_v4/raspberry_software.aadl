@@ -1,0 +1,163 @@
+package raspberry_software
+public
+
+with robot_data;
+
+-- Pilha de software do Raspberry Pi: um process por bloco do diagrama de blocos
+-- (Odometria/estado, SLAM/localizacao, Jason/agentes, Integracao Jason-ROS 2,
+-- Nav2 e javino_ros_bridge).
+process navigation_stack
+	features
+		perception_input: in data port robot_data::perception_raw;
+
+		telemetry_input: in event data port robot_data::telemetry_frame.impl
+		{ Queue_Size => 1;
+		  Overflow_Handling_Protocol => DropOldest; };
+
+		command_output: out event data port robot_data::command_frame.impl;
+	flows
+		perception_to_command_flow: flow path perception_input -> command_output;
+		telemetry_to_odometry_flow: flow sink telemetry_input;
+end navigation_stack;
+
+-- javino_ros_bridge: ponte serial entre o ROS 2 (Raspberry) e o firmware do ESP32.
+-- Converte velocity_command (cmd_vel) em command_frame (por roda) e decodifica
+-- telemetry_frame recebido do ESP32, repassando-o para a Odometria/estado.
+thread javino_ros_bridge
+	features
+		velocity_in: in data port robot_data::velocity_command.impl;
+		command_out: out event data port robot_data::command_frame.impl;
+
+		telemetry_in: in event data port robot_data::telemetry_frame.impl
+		{ Queue_Size => 1;
+		  Overflow_Handling_Protocol => DropOldest; };
+		telemetry_out: out event data port robot_data::telemetry_frame.impl;
+	flows
+		command_flow: flow path velocity_in -> command_out;
+		telemetry_flow: flow path telemetry_in -> telemetry_out;
+end javino_ros_bridge;
+
+-- Odometria/estado: funde a telemetria do ESP32 (encoders + IMU) em uma estimativa de pose/velocidade.
+thread odometry_estimation
+	features
+		telemetry_in: in event data port robot_data::telemetry_frame.impl
+		{ Queue_Size => 1;
+		  Overflow_Handling_Protocol => DropOldest; };
+		odom_out: out data port robot_data::odometry_state.impl;
+	flows
+		odom_ingest: flow sink telemetry_in;
+end odometry_estimation;
+
+-- SLAM/localizacao: combina percepcao + odometria para estimar a pose no mapa.
+thread slam_localization
+	features
+		perception_in: in data port robot_data::perception_raw;
+		odom_in: in data port robot_data::odometry_state.impl;
+		pose_out: out data port robot_data::pose2d.impl;
+	flows
+		pose_flow: flow path perception_in -> pose_out;
+end slam_localization;
+
+-- Nav2: planejamento/controle de navegacao; produz comando de velocidade (cmd_vel).
+thread nav2_stack
+	features
+		pose_in: in data port robot_data::pose2d.impl;
+		odom_in: in data port robot_data::odometry_state.impl;
+		goal_in: in data port robot_data::nav_goal.impl;
+		status_out: out data port robot_data::nav_status.impl;
+		velocity_out: out data port robot_data::velocity_command.impl;
+	flows
+		velocity_flow: flow path pose_in -> velocity_out;
+end nav2_stack;
+
+-- Jason/agentes: raciocinio BDI de alto nivel (tarefas/objetivos do robo).
+thread jason_agent
+	features
+		feedback_in: in data port robot_data::agent_feedback.impl;
+		directive_out: out data port robot_data::agent_directive.impl;
+	flows
+		directive_flow: flow source directive_out;
+end jason_agent;
+
+-- Integracao Jason-ROS 2: traduz diretivas do agente em metas do Nav2 e vice-versa.
+thread jason_ros2_bridge
+	features
+		directive_in: in data port robot_data::agent_directive.impl;
+		feedback_out: out data port robot_data::agent_feedback.impl;
+		goal_out: out data port robot_data::nav_goal.impl;
+		status_in: in data port robot_data::nav_status.impl;
+	flows
+		goal_flow: flow path directive_in -> goal_out;
+end jason_ros2_bridge;
+
+process implementation navigation_stack.impl
+	subcomponents
+		bridge_task: thread javino_ros_bridge
+		{ Dispatch_Protocol => Sporadic;
+		  Compute_Execution_Time => 300 us .. 800 us;
+		  Period => 20 ms;
+		  Priority => 40;
+		  Deadline => 20 ms; };
+
+		odom_task: thread odometry_estimation
+		{ Dispatch_Protocol => Sporadic;
+		  Compute_Execution_Time => 200 us .. 600 us;
+		  Period => 20 ms;
+		  Priority => 35;
+		  Deadline => 20 ms; };
+
+		nav2_task: thread nav2_stack
+		{ Dispatch_Protocol => Periodic;
+		  Compute_Execution_Time => 5 ms .. 15 ms;
+		  Period => 50 ms;
+		  Priority => 30;
+		  Deadline => 50 ms; };
+
+		slam_task: thread slam_localization
+		{ Dispatch_Protocol => Periodic;
+		  Compute_Execution_Time => 30 ms .. 60 ms;
+		  Period => 100 ms;
+		  Priority => 20;
+		  Deadline => 100 ms; };
+
+		integration_task: thread jason_ros2_bridge
+		{ Dispatch_Protocol => Periodic;
+		  Compute_Execution_Time => 1 ms .. 5 ms;
+		  Period => 200 ms;
+		  Priority => 15;
+		  Deadline => 200 ms; };
+
+		jason_task: thread jason_agent
+		{ Dispatch_Protocol => Periodic;
+		  Compute_Execution_Time => 20 ms .. 80 ms;
+		  Period => 500 ms;
+		  Priority => 5;
+		  Deadline => 500 ms; };
+
+	connections
+		perception_to_slam: port perception_input -> slam_task.perception_in;
+		telemetry_to_bridge: port telemetry_input -> bridge_task.telemetry_in;
+		bridge_to_odom: port bridge_task.telemetry_out -> odom_task.telemetry_in;
+		odom_to_slam: port odom_task.odom_out -> slam_task.odom_in;
+		odom_to_nav2: port odom_task.odom_out -> nav2_task.odom_in;
+		slam_to_nav2: port slam_task.pose_out -> nav2_task.pose_in;
+		jason_to_integration: port jason_task.directive_out -> integration_task.directive_in;
+		integration_to_jason: port integration_task.feedback_out -> jason_task.feedback_in;
+		integration_to_nav2: port integration_task.goal_out -> nav2_task.goal_in;
+		nav2_to_integration: port nav2_task.status_out -> integration_task.status_in;
+		nav2_to_bridge: port nav2_task.velocity_out -> bridge_task.velocity_in;
+		bridge_to_output: port bridge_task.command_out -> command_output;
+
+	flows
+		perception_to_command_flow: flow path
+		perception_to_slam -> slam_task.pose_flow -> slam_to_nav2 ->
+		nav2_task.velocity_flow -> nav2_to_bridge -> bridge_task.command_flow ->
+		bridge_to_output;
+
+		telemetry_to_odometry_flow: flow sink
+		telemetry_to_bridge -> bridge_task.telemetry_flow -> bridge_to_odom ->
+		odom_task.odom_ingest;
+
+end navigation_stack.impl;
+
+end raspberry_software;

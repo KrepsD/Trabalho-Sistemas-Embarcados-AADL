@@ -161,4 +161,98 @@ data implementation telemetry_frame.impl
 		Data_Size => 54 Bytes;
 end telemetry_frame.impl;
 
+-- Sensor de percepcao ainda a definir (LIDAR, camera RGB-D, etc.).
+-- Declarado sem .impl: estrutura interna depende do sensor escolhido.
+data perception_raw
+end perception_raw;
+
+data pose2d
+end pose2d;
+
+data odometry_state
+end odometry_state;
+
+data velocity_command
+end velocity_command;
+
+data nav_goal
+end nav_goal;
+
+data nav_status
+end nav_status;
+
+data agent_directive
+end agent_directive;
+
+data agent_feedback
+end agent_feedback;
+
+-- Pose 2D no referencial do mapa/odom.
+data implementation pose2d.impl
+	subcomponents
+		x: data Base_Types::Float_32;
+		y: data Base_Types::Float_32;
+		theta: data Base_Types::Float_32;
+	properties
+		Data_Size => 12 Bytes;
+end pose2d.impl;
+
+-- Estado fundido (odometria/estado): pose estimada + velocidades correntes.
+data implementation odometry_state.impl
+	subcomponents
+		pose: data pose2d.impl;
+		linear_velocity: data Base_Types::Float_32;
+		angular_velocity: data Base_Types::Float_32;
+	properties
+		Data_Size => 20 Bytes;
+end odometry_state.impl;
+
+-- Saida do Nav2 no referencial do robo (equivalente ao cmd_vel do ROS 2).
+data implementation velocity_command.impl
+	subcomponents
+		linear_x: data Base_Types::Float_32;
+		angular_z: data Base_Types::Float_32;
+	properties
+		Data_Size => 8 Bytes;
+end velocity_command.impl;
+
+-- Meta de navegacao enviada pela integracao Jason-ROS 2 ao Nav2.
+data implementation nav_goal.impl
+	subcomponents
+		target: data pose2d.impl;
+		goal_id: data Base_Types::Unsigned_32;
+	properties
+		Data_Size => 16 Bytes;
+end nav_goal.impl;
+
+-- Status do Nav2 sobre a meta corrente (idle/running/succeeded/aborted).
+data implementation nav_status.impl
+	subcomponents
+		goal_id: data Base_Types::Unsigned_32;
+		state: data Base_Types::Unsigned_16;
+	properties
+		Data_Size => 8 Bytes;
+end nav_status.impl;
+
+-- Diretiva de alto nivel do agente Jason para a integracao Jason-ROS 2.
+data implementation agent_directive.impl
+	subcomponents
+		goal: data nav_goal.impl;
+		task_id: data Base_Types::Unsigned_32;
+	properties
+		Data_Size => 20 Bytes;
+end agent_directive.impl;
+
+-- Retorno da integracao Jason-ROS 2 para o agente (resultado da tarefa).
+data implementation agent_feedback.impl
+	subcomponents
+		task_id: data Base_Types::Unsigned_32;
+		status: data nav_status.impl;
+	properties
+		Data_Size => 12 Bytes;
+end agent_feedback.impl;
+
+data agent_feedback
+end agent_feedback;
+
 end robot_data;

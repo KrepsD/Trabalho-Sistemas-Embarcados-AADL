@@ -3,6 +3,8 @@ public
 
 with esp32_hardware;
 with esp32_software;
+with raspberry_hardware;
+with raspberry_software;
 with robot_data;
 with SEI;
 
@@ -29,7 +31,9 @@ system implementation robot.impl
 		imu_result: abstract imu_result_observer;
 		battery: device esp32_hardware::battery_sensor;
 		serial_link: bus esp32_hardware::UART;
-		peer: device esp32_hardware::serial_peer;
+		nav_computer: system raspberry_hardware::raspberry_platform.impl;
+		nav_stack: process raspberry_software::navigation_stack.impl;
+		perception: device raspberry_hardware::perception_sensor;
 
 		
     connections
@@ -40,10 +44,13 @@ system implementation robot.impl
     	port controller_firmware.motor_output -> actuation.command;
     	
 		commands_to_firmware:
-		port peer.commands -> controller_firmware.command_input;
+		port nav_stack.command_output -> controller_firmware.command_input;
 
-		telemetry_to_peer:
-		port controller_firmware.telemetry_output -> peer.telemetry;
+		telemetry_to_stack:
+		port controller_firmware.telemetry_output -> nav_stack.telemetry_input;
+
+		perception_to_stack:
+		port perception.state -> nav_stack.perception_input;
 
 		battery_to_firmware:
 		port battery.state -> controller_firmware.battery_input;
@@ -51,8 +58,8 @@ system implementation robot.impl
 		board_serial_access:
 		bus access controller_board.serial_access <-> serial_link;
 
-		peer_serial_access:
-		bus access peer.serial_access <-> serial_link;
+		nav_computer_serial_access:
+		bus access nav_computer.serial_access <-> serial_link;
     	
     	imu_to_firmware:
     	port imu.state -> controller_firmware.aquisition;
@@ -73,7 +80,7 @@ system implementation robot.impl
     	imu_result.received;
 		filtered_imu_to_serial: end to end flow
 		controller_firmware.telemetry_output_flow ->
-		telemetry_to_peer -> peer.telemetry_sink;
+		telemetry_to_stack -> nav_stack.telemetry_to_odometry_flow;
 
 		
 	properties
@@ -85,15 +92,15 @@ system implementation robot.impl
 		controller_firmware.command_guard_task;
 
 		Actual_Connection_Binding => (reference (serial_link))
-		applies to commands_to_firmware, telemetry_to_peer;
+		applies to commands_to_firmware, telemetry_to_stack;
 
-		SEI::BandWidthBudget => 35000.0 bitsps applies to telemetry_to_peer;
+		SEI::BandWidthBudget => 35000.0 bitsps applies to telemetry_to_stack;
 		SEI::BandWidthBudget => 15000.0 bitsps applies to commands_to_firmware;
 
 		Communication_Properties::Output_Rate =>
 		[Value_Range => 0.0 .. 50.0;
 		 Rate_Unit => PerSecond;
-		 Rate_Distribution => Fixed;] applies to peer.commands;
+		 Rate_Distribution => Fixed;] applies to nav_stack.command_output;
 
 		Communication_Properties::Output_Rate =>
 		[Value_Range => 2.0 .. 2.0;
@@ -132,6 +139,24 @@ system implementation robot.impl
 
     	Latency => 0 ms .. 20 ms
     	applies to imu_activation_to_result;
+
+		Actual_Processor_Binding =>
+    	(reference (nav_computer.core_0))
+    	applies to nav_stack.bridge_task,
+    	nav_stack.odom_task;
+
+    	Actual_Processor_Binding =>
+    	(reference (nav_computer.core_1))
+    	applies to nav_stack.slam_task;
+
+    	Actual_Processor_Binding =>
+    	(reference (nav_computer.core_2))
+    	applies to nav_stack.nav2_task;
+
+    	Actual_Processor_Binding =>
+    	(reference (nav_computer.core_3))
+    	applies to nav_stack.integration_task,
+    	nav_stack.jason_task;
     	
     	
 end robot.impl;

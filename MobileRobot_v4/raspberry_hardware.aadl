@@ -1,4 +1,54 @@
 package raspberry_hardware
 public
-	
+
+with Processor_Properties;
+with robot_data;
+with esp32_hardware;
+
+-- Raspberry Pi 3 Model B+: Broadcom BCM2837B0, quad-core Cortex-A53 @ 1.4 GHz.
+processor rpi_cpu
+	features
+		serial_access: requires bus access esp32_hardware::UART;
+	properties
+		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
+		Processor_Properties::Processor_Frequency => 1400 MHz;
+end rpi_cpu;
+
+memory ram
+	properties
+		Memory_Size => 1 GByte;
+end ram;
+
+-- microSD card (removable); capacity is deployment-specific, 32 GB assumed here.
+memory storage
+	properties
+		Memory_Size => 32 GByte;
+end storage;
+
+-- Tipo de sensor a definir (LIDAR, camera RGB-D, etc.); modelado como fonte generica.
+device perception_sensor
+	features
+		state: out data port robot_data::perception_raw;
+	flows
+		measurement_source: flow source state;
+end perception_sensor;
+
+system raspberry_platform
+	features
+		serial_access: requires bus access esp32_hardware::UART;
+end raspberry_platform;
+
+system implementation raspberry_platform.impl
+	subcomponents
+		core_0: processor rpi_cpu;
+		core_1: processor rpi_cpu;
+		core_2: processor rpi_cpu;
+		core_3: processor rpi_cpu;
+		rpi_ram: memory ram;
+		rpi_storage: memory storage;
+	connections
+		serial_to_core_0:
+			bus access serial_access <-> core_0.serial_access;
+end raspberry_platform.impl;
+
 end raspberry_hardware;

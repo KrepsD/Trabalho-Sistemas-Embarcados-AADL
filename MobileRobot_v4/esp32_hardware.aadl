@@ -43,21 +43,6 @@ device battery_sensor
 		state: out data port robot_data::battery_raw.impl;
 end battery_sensor;
 
--- External serial peer only; Raspberry hardware and ROS2 are not modeled yet.
--- The environment must limit command traffic to at most one frame per 20 ms.
--- AADL frames abstract the real UART byte stream and its driver/framing buffer.
-device serial_peer
-	features
-		commands: out event data port robot_data::command_frame.impl;
-		telemetry: in event data port robot_data::telemetry_frame.impl
-		{ Queue_Size => 1;
-		  Overflow_Handling_Protocol => DropOldest; };
-		serial_access: requires bus access UART;
-	flows
-		command_source: flow source commands;
-		telemetry_sink: flow sink telemetry;
-end serial_peer;
-
 memory ram
 	properties
 		Memory_Size => 520 KByte;
