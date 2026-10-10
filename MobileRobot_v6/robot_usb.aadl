@@ -1,0 +1,24 @@
+-- adicionado pelo GPT Astra
+package robot_usb
+public
+
+with SEI;
+
+-- Adapted from ProVANT Buses::USB; host is now Pi 4 B, using a USB 3 port.
+bus USB
+end USB;
+
+bus implementation USB.usb3_depth
+	properties
+		-- Conservative payload allowance retained at 20 MB/s; not USB 3 line rate.
+		SEI::BandWidthCapacity => 160000000.0 bitsps;
+		SEI::BandWidthBudget => 100000000.0 bitsps;
+		-- Effective byte time includes an allowance for protocol overhead.
+		-- It excludes unbounded host contention and driver/ROS2 processing.
+		Communication_Properties::Transmission_Time =>
+		[Fixed => 125 us .. 1000 us;
+		 PerByte => 50 ns .. 50 ns;];
+end USB.usb3_depth;
+
+end robot_usb;
+-- Adicionado pelo GPT Astra.

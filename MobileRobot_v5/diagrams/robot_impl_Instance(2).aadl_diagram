@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="ASCII"?>
+<diagram:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://osate.org/diagram" formatVersion="7">
+  <element uuid="af4395f1-c96b-459e-9af0-187d87356b02" manual="true">
+    <element uuid="9fb0423d-53c8-4cfb-8061-2707bdff80ff" manual="true">
+      <element uuid="8b8f3f71-db90-4ff7-8c68-721b059f219a" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>command</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>actuation</seg>
+      </bo>
+      <position x="1104.0650634765625" y="366.0"/>
+      <size width="247.1978988647461" height="60.0"/>
+    </element>
+    <element uuid="7f5086bc-af14-4523-aaf8-c796b11bb223" manual="true">
+      <element uuid="bc8e2f6b-ced7-481e-ae6e-e8aba9c97ef1" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>state</seg>
+        </bo>
+        <position x="133.66797256469727" y="10.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>battery</seg>
+      </bo>
+      <position x="307.802059173584" y="286.0"/>
+      <size width="174.57422256469727" height="60.0"/>
+    </element>
+    <element uuid="1c206490-9da2-4863-85d5-890f7d693dad" manual="true">
+      <element uuid="710773a1-f4a7-45d8-a59b-cd015ac1241f" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>i2c_access</seg>
+        </bo>
+        <position x="261.1354064941406" y="10.0"/>
+      </element>
+      <element uuid="dfde01d5-e4f1-49c4-a58b-c72c64446866" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>serial_access</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>controller_board</seg>
+      </bo>
+      <position x="143.28384399414062" y="696.0"/>
+      <size width="339.0924377441406" height="60.0"/>
+    </element>
+    <element uuid="94b392b1-85ba-4429-943f-8a13f97a67a6" manual="true">
+      <element uuid="540dc0c9-f475-41a3-9aa4-517fcc495e11" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>aquisition</seg>
+        </bo>
+        <position y="218.0"/>
+      </element>
+      <element uuid="b1b862c3-52b7-420f-a57f-fd210811e00b" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>battery_input</seg>
+        </bo>
+        <position y="98.0"/>
+      </element>
+      <element uuid="3c4797c3-08cc-4984-8c37-f5d68176d611" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>command_input</seg>
+        </bo>
+        <position y="38.0"/>
+      </element>
+      <element uuid="a8cd568d-9718-4e88-8d30-b2cc4b6ab1cb" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>conversion</seg>
+        </bo>
+        <position x="505.2096710205078" y="38.0"/>
+      </element>
+      <element uuid="e073b0d5-3dfb-45cb-a0aa-7762b9e98248" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>encoder_input</seg>
+        </bo>
+        <position y="158.0"/>
+      </element>
+      <element uuid="c321cd8d-6aca-4563-9cb9-1f76b27d8adf" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>motor_output</seg>
+        </bo>
+        <position x="491.1211242675781" y="158.0"/>
+      </element>
+      <element uuid="479efef8-0ff6-4d8a-b493-b18b4e954dc5" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>telemetry_output</seg>
+        </bo>
+        <position x="470.37242126464844" y="98.0"/>
+      </element>
+      <element uuid="8ec05ce8-87c2-400a-886d-d61091b3b416" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>converted_output_flow</seg>
+        </bo>
+        <position x="347.0560073852539" y="70.0"/>
+      </element>
+      <element uuid="9f0890fe-d25b-4055-bb10-9d26125d1035" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>imu_input_flow</seg>
+        </bo>
+        <position x="249.9856719970703" y="250.0"/>
+      </element>
+      <element uuid="58cde8fa-ddd1-45b4-81f0-72d023e9042a" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>telemetry_output_flow</seg>
+        </bo>
+        <position x="347.0560073852539" y="130.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>controller_firmware</seg>
+      </bo>
+      <position x="502.37628173828125" y="218.0"/>
+      <size width="581.688835144043" height="270.0"/>
+    </element>
+    <element uuid="f83a9721-217f-4fbb-a553-02c85470a047" manual="true">
+      <element uuid="276a8bb6-a62f-48b4-9cd7-16a796459f1c" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>state</seg>
+        </bo>
+        <position x="147.75650787353516" y="10.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>encoders</seg>
+      </bo>
+      <position x="293.7135238647461" y="366.0"/>
+      <size width="188.66275787353516" height="60.0"/>
+    </element>
+    <element uuid="f18cce09-0511-4e99-bd91-13d585e3c2ad" manual="true">
+      <element uuid="87777183-2420-4fb9-b8ae-1ada54d57cf8" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>i2c_access</seg>
+        </bo>
+        <position x="179.9140625" y="98.0"/>
+      </element>
+      <element uuid="8b3dbcd0-234b-442a-be07-03a6e69a6c1e" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>state</seg>
+        </bo>
+        <position x="216.96484375" y="38.0"/>
+      </element>
+      <element uuid="5330bdd5-1d7e-4b3d-9892-f9af9452990e" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>measurement_source</seg>
+        </bo>
+        <position x="89.95703125" y="70.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>imu</seg>
+      </bo>
+      <position x="224.50518798828125" y="446.0"/>
+      <size width="257.87109375" height="150.0"/>
+    </element>
+    <element uuid="0f569cbc-7179-46a9-a567-93ad9684ac10" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>imu_i2c</seg>
+      </bo>
+      <position x="502.37628173828125" y="556.0"/>
+      <size width="97.94401168823242" height="50.0"/>
+    </element>
+    <element uuid="b073920a-cc09-4021-bea0-b262d02a268f" manual="true">
+      <element uuid="6a976b25-db9e-4f72-b584-87c8eff5eccb" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>sample</seg>
+        </bo>
+        <position y="38.0"/>
+      </element>
+      <element uuid="50bfb376-4d5e-4106-b6ac-8734096ab738" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>received</seg>
+        </bo>
+        <position x="166.94529724121094" y="70.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>imu_result</seg>
+      </bo>
+      <position x="1104.0650634765625" y="218.0"/>
+      <size width="233.92706298828125" height="90.0"/>
+    </element>
+    <element uuid="0947d73c-30a5-435d-be99-b6da4e4dbd3f" manual="true">
+      <element uuid="f6bb66e4-af15-491c-86f2-9f9c3a32f944" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>serial_access</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>nav_computer</seg>
+      </bo>
+      <position x="143.28384399414062" y="616.0"/>
+      <size width="327.23046112060547" height="60.0"/>
+    </element>
+    <element uuid="bdb42069-5262-4ddc-a8fd-a9d872bc89bf" manual="true">
+      <element uuid="be85c4a6-406c-4da0-96a7-47ba71e9f672" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>command_output</seg>
+        </bo>
+        <position x="465.24222564697266" y="38.0"/>
+      </element>
+      <element uuid="5ebd039e-d4d2-455f-9bc2-ad0a657264ec" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>perception_input</seg>
+        </bo>
+        <position y="38.0"/>
+      </element>
+      <element uuid="60ea4136-320f-4d5c-80f8-1acc4c27a61d" manual="true" dockArea="left">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>telemetry_input</seg>
+        </bo>
+        <position y="98.0"/>
+      </element>
+      <element uuid="8713cbdd-e2b3-447a-a526-266d8e8267aa" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>perception_to_command_flow</seg>
+        </bo>
+      </element>
+      <element uuid="a92e63d9-7676-485d-a277-465a1b183373" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>telemetry_to_odometry_flow</seg>
+        </bo>
+        <position x="323.3450698852539" y="130.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>nav_stack</seg>
+      </bo>
+      <position x="1104.0650634765625" y="48.0"/>
+      <size width="580.2695770263672" height="150.0"/>
+    </element>
+    <element uuid="d3eab57f-5923-46d9-98e8-fd28d242bd1c" manual="true">
+      <element uuid="8a942f49-ffdc-4602-b5ef-ee32ad536f27" manual="true" dockArea="right">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>feature_instance</seg>
+          <seg>state</seg>
+        </bo>
+        <position x="155.17186737060547" y="38.0"/>
+      </element>
+      <element uuid="4264cdaa-8aa4-478f-8e17-41649ee8071d" manual="true">
+        <bo>
+          <seg>org.osate.ge.diagrams.instance</seg>
+          <seg>flow_specification_instance</seg>
+          <seg>measurement_source</seg>
+        </bo>
+        <position x="52.90625" y="70.0"/>
+      </element>
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>perception</seg>
+      </bo>
+      <position x="887.9869995117188" y="48.0"/>
+      <size width="196.07811737060547" height="90.0"/>
+    </element>
+    <element uuid="74b98a97-3d3f-48fa-9f4a-a18e5221060b" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>component_instance</seg>
+        <seg>serial_link</seg>
+      </bo>
+      <position x="12.0" y="648.0"/>
+      <size width="111.28385162353516" height="50.0"/>
+    </element>
+    <element uuid="b9102168-39dc-4efd-97a6-0c47cd580025" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>battery_to_firmware : robot_impl_Instance.battery.state -> robot_impl_Instance.controller_firmware.battery_input</seg>
+      </bo>
+      <bendpoints>
+        <point x="492.37628173828125" y="328.0"/>
+        <point x="492.37628173828125" y="348.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="bfb6a557-d672-428b-a02f-448b8737c7c2" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>board_i2c_access : robot_impl_Instance.controller_board.i2c_access -> robot_impl_Instance.imu_i2c</seg>
+      </bo>
+      <bendpoints>
+        <point x="492.37628173828125" y="738.0"/>
+        <point x="492.37628173828125" y="596.0"/>
+        <point x="498.37628173828125" y="596.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="f353dfdf-ebe0-4f43-92c0-1aa55a9ca9a9" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>board_i2c_access : robot_impl_Instance.imu_i2c -> robot_impl_Instance.controller_board.i2c_access</seg>
+      </bo>
+      <bendpoints>
+        <point x="498.37628173828125" y="586.0"/>
+        <point x="492.37628173828125" y="586.0"/>
+        <point x="492.37628173828125" y="738.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="596eb57a-44b1-4ca4-81b3-5971497e6930" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>board_serial_access : robot_impl_Instance.controller_board.serial_access -> robot_impl_Instance.serial_link</seg>
+      </bo>
+      <bendpoints>
+        <point x="133.28384399414062" y="738.0"/>
+        <point x="133.28384399414062" y="678.0"/>
+        <point x="127.28385162353516" y="678.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="4dd1a0d7-2fa7-4a7a-b867-31f42d8fd5f2" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>board_serial_access : robot_impl_Instance.serial_link -> robot_impl_Instance.controller_board.serial_access</seg>
+      </bo>
+      <bendpoints>
+        <point x="127.28385162353516" y="688.0"/>
+        <point x="133.28384399414062" y="688.0"/>
+        <point x="133.28384399414062" y="738.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="4ea800d5-f60e-4175-bc18-3be1230e0a2d" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>commands_to_firmware : robot_impl_Instance.nav_stack.command_output -> robot_impl_Instance.controller_firmware.command_input</seg>
+      </bo>
+      <bendpoints>
+        <point x="1694.33447265625" y="118.0"/>
+        <point x="1694.33447265625" y="38.0"/>
+        <point x="492.37628173828125" y="38.0"/>
+        <point x="492.37628173828125" y="288.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="8bbf7a75-8305-4559-8fca-69a4b27fb001" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>converted_to_observer : robot_impl_Instance.controller_firmware.conversion -> robot_impl_Instance.imu_result.sample</seg>
+      </bo>
+    </element>
+    <element uuid="0016b322-2be7-4ae4-be80-6ffb4322fcfe" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>encoder_to_firmware : robot_impl_Instance.encoders.state -> robot_impl_Instance.controller_firmware.encoder_input</seg>
+      </bo>
+    </element>
+    <element uuid="a3bf685b-fa5e-4b3d-8099-7757edf7c1d4" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>firmware_to_actuation : robot_impl_Instance.controller_firmware.motor_output -> robot_impl_Instance.actuation.command</seg>
+      </bo>
+    </element>
+    <element uuid="81be57b9-4320-499f-84a0-69f480cc9586" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>imu_i2c_access : robot_impl_Instance.imu.i2c_access -> robot_impl_Instance.imu_i2c</seg>
+      </bo>
+      <bendpoints>
+        <point x="502.37628173828125" y="576.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="1b6be2f1-73c5-4364-9079-17eedce476f7" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>imu_i2c_access : robot_impl_Instance.imu_i2c -> robot_impl_Instance.imu.i2c_access</seg>
+      </bo>
+      <bendpoints>
+        <point x="498.37628173828125" y="566.0"/>
+        <point x="492.37628173828125" y="566.0"/>
+        <point x="492.37628173828125" y="576.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="d224d475-3992-49cb-bb6b-57b7bf00a4a8" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>imu_to_firmware : robot_impl_Instance.imu.state -> robot_impl_Instance.controller_firmware.aquisition</seg>
+      </bo>
+      <bendpoints>
+        <point x="492.37628173828125" y="516.0"/>
+        <point x="492.37628173828125" y="468.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="0eba7c7d-ff86-48f3-a27b-2837cb826e84" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>nav_computer_serial_access : robot_impl_Instance.nav_computer.serial_access -> robot_impl_Instance.serial_link</seg>
+      </bo>
+      <bendpoints>
+        <point x="123.28385162353516" y="658.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="2c6570dc-9ad1-44a7-984b-ed08b947a73d" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>nav_computer_serial_access : robot_impl_Instance.serial_link -> robot_impl_Instance.nav_computer.serial_access</seg>
+      </bo>
+      <bendpoints>
+        <point x="127.28385162353516" y="668.0"/>
+        <point x="133.28384399414062" y="668.0"/>
+        <point x="133.28384399414062" y="658.0"/>
+      </bendpoints>
+    </element>
+    <element uuid="f0bed54e-de8d-4675-9c12-26cdb7f2e900" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>perception_to_stack : robot_impl_Instance.perception.state -> robot_impl_Instance.nav_stack.perception_input</seg>
+      </bo>
+    </element>
+    <element uuid="e4893b39-bfd2-4953-9321-a8082ee2a82a" manual="true">
+      <bo>
+        <seg>org.osate.ge.diagrams.instance</seg>
+        <seg>connection_reference</seg>
+        <seg>telemetry_to_stack : robot_impl_Instance.controller_firmware.telemetry_output -> robot_impl_Instance.nav_stack.telemetry_input</seg>
+      </bo>
+      <bendpoints>
+        <point x="1094.0650634765625" y="348.0"/>
+        <point x="1094.0650634765625" y="178.0"/>
+      </bendpoints>
+    </element>
+    <bo>
+      <seg>org.osate.ge.diagrams.instance</seg>
+      <seg>system_instance</seg>
+      <seg>/mobilerobot_v4/instances/robot_system_robot_impl_instance.aaxl2</seg>
+    </bo>
+    <position/>
+    <size width="1706.3345947265625" height="768.0"/>
+  </element>
+  <config type="structure" connectionPrimaryLabelsVisible="false">
+    <enabledAadlProperties/>
+    <context>
+      <seg>org.osate.ge.diagrams.instance</seg>
+      <seg>system_instance</seg>
+      <seg>/mobilerobot_v4/instances/robot_system_robot_impl_instance.aaxl2</seg>
+    </context>
+  </config>
+</diagram:Diagram>

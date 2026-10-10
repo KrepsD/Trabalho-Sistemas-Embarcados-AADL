@@ -1,0 +1,138 @@
+package raspberry_hardware
+public
+
+with Processor_Properties;
+-- adicionado pelo GPT Astra
+with SEI;
+-- Adicionado pelo GPT Astra.
+
+with robot_data;
+with esp32_hardware;
+-- adicionado pelo GPT Astra
+with platform_os;
+with robot_usb;
+with robot_power;
+with Electricity_Properties;
+-- Adicionado pelo GPT Astra.
+
+-- adicionado pelo GPT Astra
+-- Raspberry Pi 4 Model B, 4 GB: BCM2711, quad-core Cortex-A72, 1.8 GHz scenario.
+-- Execution costs remain assumptions; frequency alone does not rescale WCET.
+-- Adicionado pelo GPT Astra.
+processor rpi_cpu
+	features
+		serial_access: requires bus access esp32_hardware::UART;
+	properties
+		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
+		-- adicionado pelo GPT Astra
+		Processor_Properties::Processor_Frequency => 1800 MHz;
+-- Adicionado pelo GPT Astra.
+end rpi_cpu;
+
+memory ram
+	properties
+		-- adicionado pelo GPT Astra
+		Memory_Size => 4 GByte;
+-- Adicionado pelo GPT Astra.
+-- adicionado pelo GPT Astra
+		-- Nominal capacity matches Memory_Size; refine to usable RAM after deployment.
+		SEI::RAMCapacity => 4.0 GByte;
+-- Adicionado pelo GPT Astra.
+
+end ram;
+
+-- microSD card (removable); capacity is deployment-specific, 32 GB assumed here.
+memory storage
+	properties
+		Memory_Size => 32 GByte;
+end storage;
+
+-- adicionado pelo GPT Astra
+-- Adapted from ProVANT devices::camera_usb::CAMERA_USB.
+-- Keep picture output, optional frame event, USB access and 5 V supply.
+-- The existing state name is retained for compatibility with robot_system.
+device perception_sensor
+	features
+		Serial_Wire: requires bus access robot_usb::USB;
+		Supply: requires bus access robot_power::usb_5v
+			{ SEI::PowerBudget => 3.5 W; }; -- Planning allowance, not measured D435i power.
+		state: out data port robot_data::perception_raw;
+		proc_evt: out event port;
+	flows
+		measurement_source: flow source state;
+end perception_sensor;
+
+device implementation perception_sensor.d435i
+	properties
+		-- Depth only, Z16 640x480 at 15 Hz; period rounded to microseconds.
+		Period => 66667 us;
+		Electricity_Properties::Core_Voltage => 5.0 V;
+		Communication_Properties::Output_Rate =>
+		[Value_Range => 15.0 .. 15.0;
+		 Rate_Unit => PerSecond;
+		 Rate_Distribution => Fixed;] applies to state;
+end perception_sensor.d435i;
+
+device usb_host
+	features
+		Serial_Wire: requires bus access robot_usb::USB;
+end usb_host;
+
+device board_power_distribution
+	features
+		Supply: requires bus access robot_power::logic_5v
+			{ SEI::PowerBudget => 15.0 W; };
+		USB_supply: requires bus access robot_power::usb_5v
+			{ SEI::PowerSupply => 6.0 W; };
+	properties
+		-- 15 W board input envelope INCLUDES the downstream 6 W USB allocation.
+		-- Do not add camera power to this input envelope a second time.
+		Electricity_Properties::Core_Voltage => 5.0 V;
+end board_power_distribution;
+-- Adicionado pelo GPT Astra.
+
+system raspberry_platform
+	features
+-- adicionado pelo GPT Astra
+		usb_access: requires bus access robot_usb::USB;
+		Supply: requires bus access robot_power::logic_5v;
+		USB_supply: requires bus access robot_power::usb_5v;
+-- Adicionado pelo GPT Astra.
+		serial_access: requires bus access esp32_hardware::UART;
+end raspberry_platform;
+
+system implementation raspberry_platform.impl
+	subcomponents
+-- adicionado pelo GPT Astra
+		usb_controller: device usb_host;
+		board_power: device board_power_distribution;
+		chonos_core_0: virtual processor platform_os::chonos_scheduler;
+		chonos_core_1: virtual processor platform_os::chonos_scheduler;
+		chonos_core_2: virtual processor platform_os::chonos_scheduler;
+		chonos_core_3: virtual processor platform_os::chonos_scheduler;
+-- Adicionado pelo GPT Astra.
+
+		core_0: processor rpi_cpu;
+		core_1: processor rpi_cpu;
+		core_2: processor rpi_cpu;
+		core_3: processor rpi_cpu;
+		rpi_ram: memory ram;
+		rpi_storage: memory storage;
+	connections
+-- adicionado pelo GPT Astra
+		usb_to_host: bus access usb_access <-> usb_controller.Serial_Wire;
+		board_supply: bus access Supply <-> board_power.Supply;
+		usb_power_forward: bus access board_power.USB_supply <-> USB_supply;
+-- Adicionado pelo GPT Astra.
+		serial_to_core_0:
+			bus access serial_access <-> core_0.serial_access;
+-- adicionado pelo GPT Astra
+	properties
+		Actual_Processor_Binding => (reference (core_0)) applies to chonos_core_0;
+		Actual_Processor_Binding => (reference (core_1)) applies to chonos_core_1;
+		Actual_Processor_Binding => (reference (core_2)) applies to chonos_core_2;
+		Actual_Processor_Binding => (reference (core_3)) applies to chonos_core_3;
+-- Adicionado pelo GPT Astra.
+end raspberry_platform.impl;
+
+end raspberry_hardware;

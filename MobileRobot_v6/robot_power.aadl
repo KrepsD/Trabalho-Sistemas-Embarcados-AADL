@@ -1,0 +1,76 @@
+-- adicionado pelo GPT Astra
+package robot_power
+public
+
+with Electricity_Properties;
+with SEI;
+
+-- Adapted from ProVANT battery_14v_4ah, regulator_tsi10n and Buses::Misc.
+-- All capacities below are provisional design allocations, not selected hardware.
+bus battery_rail
+	properties
+		Electricity_Properties::Bus_Voltage_Range => 6.0 V .. 8.4 V;
+		-- 6 V minimum * assumed 10 A source capability.
+		SEI::PowerCapacity => 60.0 W;
+end battery_rail;
+
+bus logic_5v
+	properties
+		Electricity_Properties::Bus_Voltage_Range => 5.0 V .. 5.0 V;
+		SEI::PowerCapacity => 20.0 W;
+end logic_5v;
+
+bus motor_6v
+	properties
+		Electricity_Properties::Bus_Voltage_Range => 6.0 V .. 6.0 V;
+		SEI::PowerCapacity => 30.0 W;
+end motor_6v;
+
+bus usb_5v
+	properties
+		Electricity_Properties::Bus_Voltage_Range => 5.0 V .. 5.0 V;
+		-- Pi 4 total USB supply envelope: 5 V * 1.2 A, shared by all USB ports.
+		SEI::PowerCapacity => 6.0 W;
+end usb_5v;
+
+device battery_pack
+	features
+		Power_out: requires bus access battery_rail
+			{ SEI::PowerSupply => 60.0 W; };
+	properties
+		Electricity_Properties::Core_Voltage => 7.4 V;
+		Electricity_Properties::Max_Current => 10.0 A;
+		-- Capacity in Ah and discharge curve are unknown; no runtime claim.
+end battery_pack;
+
+device logic_regulator
+	features
+		Power_in: requires bus access battery_rail
+			{ SEI::PowerBudget => 22.223 W; };
+		Power_out: requires bus access logic_5v
+			{ SEI::PowerSupply => 20.0 W; };
+	properties
+		-- Reserve full 5 V / 4 A output at assumed 90 percent efficiency.
+		Electricity_Properties::Output_Voltage => 5.0 V;
+		Electricity_Properties::Max_Current => 4.0 A;
+		Electricity_Properties::Efficiency => 0.90;
+		Electricity_Properties::Device_Regulator => Switcher;
+end logic_regulator;
+
+device motor_regulator
+	features
+		Power_in: requires bus access battery_rail
+			{ SEI::PowerBudget => 33.334 W; };
+		Power_out: requires bus access motor_6v
+			{ SEI::PowerSupply => 30.0 W; };
+	properties
+		-- Reserve full 6 V / 5 A output at assumed 90 percent efficiency.
+		-- Select buck-boost or raise battery cutoff to preserve 6 V regulation.
+		Electricity_Properties::Output_Voltage => 6.0 V;
+		Electricity_Properties::Max_Current => 5.0 A;
+		Electricity_Properties::Efficiency => 0.90;
+		Electricity_Properties::Device_Regulator => Switcher;
+end motor_regulator;
+
+end robot_power;
+-- Adicionado pelo GPT Astra.

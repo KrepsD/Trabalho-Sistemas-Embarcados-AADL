@@ -231,7 +231,7 @@ data implementation nav_status.impl
 		goal_id: data Base_Types::Unsigned_32;
 		state: data Base_Types::Unsigned_16;
 	properties
-		Data_Size => 8 Bytes;
+		Data_Size => 6 Bytes;
 end nav_status.impl;
 
 -- Diretiva de alto nivel do agente Jason para a integracao Jason-ROS 2.
@@ -249,10 +249,8 @@ data implementation agent_feedback.impl
 		task_id: data Base_Types::Unsigned_32;
 		status: data nav_status.impl;
 	properties
-		Data_Size => 12 Bytes;
+		Data_Size => 10 Bytes;
 end agent_feedback.impl;
 
-data agent_feedback
-end agent_feedback;
 
 end robot_data;

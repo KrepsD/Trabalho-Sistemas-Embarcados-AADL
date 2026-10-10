@@ -1,0 +1,112 @@
+// -- adicionado pelo GPT Astra
+// Draft requirements: computed values need analysis/test evidence, not zero defaults.
+// Current deadlines are design assumptions; no requirement is claimed as verified.
+
+system requirements MobileRobotV4_ESP32_Timing for esp32_software::firmware.impl [
+	requirement Deadline_control_task: "control_task response deadline" for control_task [
+		val deadlineLimit = 10 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_imu_task: "imu_task response deadline" for imu_task [
+		val deadlineLimit = 20 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_battery_task: "battery_task response deadline" for battery_task [
+		val deadlineLimit = 500 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_telemetry_task: "telemetry_task response deadline" for telemetry_task [
+		val deadlineLimit = 20 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_rx_task: "rx_task response deadline" for rx_task [
+		val deadlineLimit = 20 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_command_guard_task: "command_guard_task response deadline" for command_guard_task [
+		val deadlineLimit = 10 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+]
+
+system requirements MobileRobotV4_Raspberry_Timing for raspberry_software::navigation_stack.impl [
+	requirement Deadline_bridge_task: "bridge_task response deadline" for bridge_task [
+		val deadlineLimit = 20 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_odom_task: "odom_task response deadline" for odom_task [
+		val deadlineLimit = 20 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_nav2_task: "nav2_task response deadline" for nav2_task [
+		val deadlineLimit = 50 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_slam_task: "slam_task response deadline" for slam_task [
+		val deadlineLimit = 100 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_integration_task: "integration_task response deadline" for integration_task [
+		val deadlineLimit = 200 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+	requirement Deadline_jason_task: "jason_task response deadline" for jason_task [
+		val deadlineLimit = 500 ms
+		compute worstResponse: real units AADL_Project::Time_Units
+		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
+		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+	]
+
+]
+
+system requirements MobileRobotV4_RAM for raspberry_hardware::raspberry_platform.impl [
+	requirement RAM_Reserve: "At least 20 percent usable RAM reserve" for rpi_ram [
+		val minimumReserve = 0.20
+		compute usableRam: real units AADL_Project::Size_Units
+		compute peakAccountedRam: real units AADL_Project::Size_Units
+		description "Peak accounted demand shall not exceed 80 percent of usable physical RAM. Include the OS, ROS2/DDS, D435i driver and perception conversion, Nav2, SLAM Toolbox, Jason, bridges and bounded buffers, counting shared memory once. Swap is not additional RAM."
+		rationale "Provisional engineering margin. Fix camera streams, resolution/FPS, queue sizes, map limits and operating duration before evaluating."
+		value predicate usableRam > 0 Bytes and peakAccountedRam >= 0 Bytes and peakAccountedRam <= usableRam * (1.0 - minimumReserve)
+	]
+
+	requirement RAM_Runtime: "Available RAM during the deployment test" for rpi_ram [
+		val minimumAvailableFraction = 0.20
+		compute observedMinimumFraction: real
+		description "During the declared full-stack test, including startup and map growth, the minimum sampled Linux MemAvailable/MemTotal shall be at least 0.20. Record sampling interval, test duration and configuration. Sampling does not prove absence of all transient peaks."
+		value predicate observedMinimumFraction >= minimumAvailableFraction and observedMinimumFraction <= 1.0
+	]
+]
+// -- Adicionado pelo GPT Astra.

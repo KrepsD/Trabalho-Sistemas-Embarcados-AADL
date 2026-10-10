@@ -1,0 +1,225 @@
+package robot_system
+public
+
+with esp32_hardware;
+with esp32_software;
+with raspberry_hardware;
+with raspberry_software;
+with robot_data;
+with SEI;
+-- adicionado pelo GPT Astra
+with robot_usb;
+with robot_power;
+-- Adicionado pelo GPT Astra.
+
+abstract imu_result_observer
+    features
+        sample: in data port robot_data::imu_sample.impl;
+    flows
+        received: flow sink sample
+            { Latency => 0 ms .. 0 ms; };
+end imu_result_observer;
+
+
+system robot
+end robot;
+
+system implementation robot.impl
+	subcomponents
+		controller_board: system esp32_hardware::esp_platform.impl;
+		controller_firmware: process esp32_software::firmware.impl;
+		encoders: device esp32_hardware::wheel_encoders;
+		actuation: device esp32_hardware::motor_actuation;
+		imu: device esp32_hardware::IMU;
+		imu_i2c: bus esp32_hardware::I2C;
+		imu_result: abstract imu_result_observer;
+		battery: device esp32_hardware::battery_sensor;
+		serial_link: bus esp32_hardware::UART;
+		nav_computer: system raspberry_hardware::raspberry_platform.impl;
+		nav_stack: process raspberry_software::navigation_stack.impl;
+		-- adicionado pelo GPT Astra
+		perception: device raspberry_hardware::perception_sensor.d435i;
+		perception_usb: bus robot_usb::USB.usb3_depth;
+		power_battery: device robot_power::battery_pack;
+		regulator_5v: device robot_power::logic_regulator;
+		regulator_6v: device robot_power::motor_regulator;
+		battery_rail: bus robot_power::battery_rail;
+		logic_rail: bus robot_power::logic_5v;
+		motor_rail: bus robot_power::motor_6v;
+		usb_power_rail: bus robot_power::usb_5v;
+-- Adicionado pelo GPT Astra.
+-- adicionado pelo GPT Astra
+		-- RAM accounting only; these placeholders add no scheduled tasks.
+		chonos_ram_cost: process raspberry_software::chonos_memory;
+		perception_ram_cost: process raspberry_software::perception_memory;
+		shared_runtime_ram_cost: process raspberry_software::shared_runtime_memory;
+-- Adicionado pelo GPT Astra.
+
+
+		
+    connections
+-- adicionado pelo GPT Astra
+		camera_usb: bus access perception.Serial_Wire <-> perception_usb;
+		host_usb: bus access nav_computer.usb_access <-> perception_usb;
+		battery_supply: bus access power_battery.Power_out <-> battery_rail;
+		logic_regulator_in: bus access regulator_5v.Power_in <-> battery_rail;
+		motor_regulator_in: bus access regulator_6v.Power_in <-> battery_rail;
+		logic_regulator_out: bus access regulator_5v.Power_out <-> logic_rail;
+		motor_regulator_out: bus access regulator_6v.Power_out <-> motor_rail;
+		pi_supply: bus access nav_computer.Supply <-> logic_rail;
+		esp_supply: bus access controller_board.Supply <-> logic_rail;
+		motor_supply: bus access actuation.Supply <-> motor_rail;
+		pi_usb_supply: bus access nav_computer.USB_supply <-> usb_power_rail;
+		camera_supply: bus access perception.Supply <-> usb_power_rail;
+-- Adicionado pelo GPT Astra.
+    	encoder_to_firmware:
+    	port encoders.state -> controller_firmware.encoder_input;
+
+		firmware_to_actuation:
+    	port controller_firmware.motor_output -> actuation.command;
+    	
+		commands_to_firmware:
+		port nav_stack.command_output -> controller_firmware.command_input;
+
+		telemetry_to_stack:
+		port controller_firmware.telemetry_output -> nav_stack.telemetry_input;
+
+		perception_to_stack:
+		port perception.state -> nav_stack.perception_input;
+
+		battery_to_firmware:
+		port battery.state -> controller_firmware.battery_input;
+
+		board_serial_access:
+		bus access controller_board.serial_access <-> serial_link;
+
+		nav_computer_serial_access:
+		bus access nav_computer.serial_access <-> serial_link;
+    	
+    	imu_to_firmware:
+    	port imu.state -> controller_firmware.aquisition;
+    	
+    	imu_i2c_access:
+    	bus access imu.i2c_access <-> imu_i2c;
+		
+		board_i2c_access:
+    	bus access controller_board.i2c_access <-> imu_i2c;
+    		
+    	converted_to_observer:
+    	port controller_firmware.conversion -> imu_result.sample;
+    		 		
+    flows
+        imu_activation_to_result: end to end flow
+    	controller_firmware.converted_output_flow ->
+    	converted_to_observer ->
+    	imu_result.received;
+		filtered_imu_to_serial: end to end flow
+		controller_firmware.telemetry_output_flow ->
+		telemetry_to_stack -> nav_stack.telemetry_to_odometry_flow;
+
+		
+	properties
+-- adicionado pelo GPT Astra
+		Actual_Connection_Binding => (reference (perception_usb))
+		applies to perception_to_stack;
+		-- 73.728 Mbit/s depth payload; 85 Mbit/s allocation includes metadata allowance.
+		SEI::BandWidthBudget => 85000000.0 bitsps applies to perception_to_stack;
+-- Adicionado pelo GPT Astra.
+-- adicionado pelo GPT Astra
+		-- 800 MiB application threads + 610 MiB support = 1410 MiB provisional demand.
+		-- nav_stack threads inherit this binding. No RAMActual is claimed.
+		Actual_Memory_Binding => (reference (nav_computer.rpi_ram))
+		applies to nav_stack, chonos_ram_cost, perception_ram_cost, shared_runtime_ram_cost;
+-- Adicionado pelo GPT Astra.
+		-- adicionado pelo GPT Astra
+		Actual_Processor_Binding =>
+		(reference (controller_board.zephyr_core_0))
+		applies to controller_firmware.battery_task,
+		controller_firmware.telemetry_task,
+		controller_firmware.rx_task,
+		controller_firmware.command_guard_task;
+-- Adicionado pelo GPT Astra.
+
+		Actual_Connection_Binding => (reference (serial_link))
+		applies to commands_to_firmware, telemetry_to_stack;
+
+		SEI::BandWidthBudget => 35000.0 bitsps applies to telemetry_to_stack;
+		SEI::BandWidthBudget => 15000.0 bitsps applies to commands_to_firmware;
+
+		Communication_Properties::Output_Rate =>
+		[Value_Range => 0.0 .. 50.0;
+		 Rate_Unit => PerSecond;
+		 Rate_Distribution => Fixed;] applies to nav_stack.command_output;
+
+		Communication_Properties::Output_Rate =>
+		[Value_Range => 2.0 .. 2.0;
+		 Rate_Unit => PerSecond;
+		 Rate_Distribution => Fixed;] applies to battery.state;
+		-- adicionado pelo GPT Astra
+		Actual_Processor_Binding =>
+    	(reference (controller_board.zephyr_core_1))
+    	applies to controller_firmware.control_task;
+-- Adicionado pelo GPT Astra.
+    	
+    	-- adicionado pelo GPT Astra
+		Actual_Processor_Binding =>
+    	(reference (controller_board.zephyr_core_1))
+    	applies to controller_firmware.imu_task;
+-- Adicionado pelo GPT Astra.
+    	
+    	Actual_Connection_Binding =>
+    	(reference (imu_i2c))
+    	applies to imu_to_firmware;
+    	
+    	Communication_Properties::Transmission_Type => pull
+    	applies to imu_to_firmware;
+    	
+    	-- Chosen arbitrarily
+    	SEI::BandWidthBudget => 8000.0 bitsps
+    	applies to imu_to_firmware;
+    	
+    	-- 1 sample read every 20ms: value range 50.0
+    	Communication_Properties::Output_Rate =>
+    	[Value_Range => 50.0 .. 50.0;
+     	Rate_Unit => PerSecond;
+     	Rate_Distribution => Fixed;]
+    	applies to imu.state;
+    	
+
+		-- Provisional 100 ms limit: IMU task activation to serial delivery.
+		-- Includes acquisition/filtering; excludes host processing and filter phase lag.
+		Latency => 0 ms .. 100 ms applies to filtered_imu_to_serial;
+
+    	Latency => 0 ms .. 20 ms
+    	applies to imu_activation_to_result;
+
+		-- adicionado pelo GPT Astra
+		Actual_Processor_Binding =>
+    	(reference (nav_computer.chonos_core_0))
+    	applies to nav_stack.bridge_task,
+    	nav_stack.odom_task;
+-- Adicionado pelo GPT Astra.
+
+    	-- adicionado pelo GPT Astra
+		Actual_Processor_Binding =>
+    	(reference (nav_computer.chonos_core_1))
+    	applies to nav_stack.slam_task;
+-- Adicionado pelo GPT Astra.
+
+    	-- adicionado pelo GPT Astra
+		Actual_Processor_Binding =>
+    	(reference (nav_computer.chonos_core_2))
+    	applies to nav_stack.nav2_task;
+-- Adicionado pelo GPT Astra.
+
+    	-- adicionado pelo GPT Astra
+		Actual_Processor_Binding =>
+    	(reference (nav_computer.chonos_core_3))
+    	applies to nav_stack.integration_task,
+    	nav_stack.jason_task;
+-- Adicionado pelo GPT Astra.
+    	
+    	
+end robot.impl;
+
+end robot_system;

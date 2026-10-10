@@ -1,0 +1,23 @@
+-- adicionado pelo GPT Astra
+package platform_os
+public
+
+-- Adapted from ProVANT OS::Root_Scheduler and OS::POSIX_Scheduler.
+-- One scheduling domain per core, not one OS installation per core.
+virtual processor root_scheduler
+end root_scheduler;
+
+virtual processor zephyr_scheduler extends root_scheduler
+	properties
+		-- Model assumption: pinned, preemptive fixed-priority threads.
+		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
+end zephyr_scheduler;
+
+virtual processor chonos_scheduler extends root_scheduler
+	properties
+		-- Analysis policy only; ordinary Linux/ROS2 scheduling is not proven equivalent.
+		Scheduling_Protocol => (POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
+end chonos_scheduler;
+
+end platform_os;
+-- Adicionado pelo GPT Astra.

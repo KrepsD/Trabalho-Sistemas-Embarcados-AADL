@@ -1,0 +1,23 @@
+// -- adicionado pelo GPT Astra
+stakeholder goals MobileRobotV6_ESP32_Goals for esp32_software::firmware.impl [
+	goal Operation: "ESP32 operation" [
+		stakeholder MobileRobotV6_Stakeholders.projectOwner
+		description "Keep control, sensing and communication within the declared response deadlines."
+	]
+]
+
+stakeholder goals MobileRobotV6_Raspberry_Goals for raspberry_software::navigation_stack.impl [
+	goal Operation: "Raspberry operation" [
+		stakeholder MobileRobotV6_Stakeholders.projectOwner
+		description "Keep navigation, communication and agent decisions within the declared response deadlines."
+	]
+]
+
+stakeholder goals MobileRobotV6_RAM_Goals for raspberry_hardware::raspberry_platform.impl [
+	goal Operation: "RAM operation" [
+		stakeholder MobileRobotV6_Stakeholders.projectOwner
+		description "Maintain at least 20 percent usable RAM available during the documented 30 minute operating scenario."
+	]
+]
+
+// -- Adicionado pelo GPT Astra.

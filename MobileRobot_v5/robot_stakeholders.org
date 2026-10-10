@@ -1,0 +1,6 @@
+// -- adicionado pelo GPT Astra
+organization MobileRobotV5_Stakeholders
+stakeholder projectOwner [
+	full name "Daniel"
+]
+// -- Adicionado pelo GPT Astra.

@@ -1,0 +1,29 @@
+Bus load analysis of robot_impl_Instance
+
+
+"Physical Bus","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"imu_i2c","12.5","2.5","1.0","3.4"
+"serial_link","14.4","10.0","6.25","3.7"
+
+"Bus imu_i2c has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"control_task.encoder_snapshot -> telemetry_task.encoders","","0.0","","0.8"
+"imu_task.conversion -> filter_task.sample","","0.0","","1.2"
+"command_guard_task.speed_reference -> control_task.speed_reference","","0.0","","0.8"
+"imu.state -> controller_firmware.imu_task.aquisition","","1.0","","0.6"
+
+"Connection control_task.encoder_snapshot -> telemetry_task.encoders bound to imu_i2c"
+"WARNING: Connection control_task.encoder_snapshot -> telemetry_task.encoders has no bandwidth budget"
+
+"Connection imu_task.conversion -> filter_task.sample bound to imu_i2c"
+"WARNING: Connection imu_task.conversion -> filter_task.sample has no bandwidth budget"
+
+"Connection command_guard_task.speed_reference -> control_task.speed_reference bound to imu_i2c"
+"WARNING: Connection command_guard_task.speed_reference -> control_task.speed_reference has no bandwidth budget"
+
+"Bus serial_link has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"peer.commands -> controller_firmware.rx_task.frame","","1.875","","1.0"
+"controller_firmware.telemetry_task.frame -> peer.telemetry","","4.375","","2.7"
+
+

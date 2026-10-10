@@ -149,14 +149,17 @@ process implementation navigation_stack.impl
 		bridge_to_output: port bridge_task.command_out -> command_output;
 
 	flows
+		-- adicionado pelo GPT Astra
+		-- Flow implementations include their external port endpoints.
 		perception_to_command_flow: flow path
-		perception_to_slam -> slam_task.pose_flow -> slam_to_nav2 ->
+		perception_input -> perception_to_slam -> slam_task.pose_flow -> slam_to_nav2 ->
 		nav2_task.velocity_flow -> nav2_to_bridge -> bridge_task.command_flow ->
-		bridge_to_output;
+		bridge_to_output -> command_output;
 
 		telemetry_to_odometry_flow: flow sink
-		telemetry_to_bridge -> bridge_task.telemetry_flow -> bridge_to_odom ->
+		telemetry_input -> telemetry_to_bridge -> bridge_task.telemetry_flow -> bridge_to_odom ->
 		odom_task.odom_ingest;
+		-- Adicionado pelo GPT Astra.
 
 end navigation_stack.impl;
 

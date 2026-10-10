@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="ASCII"?>
+<result:AnalysisResult xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:result="http://www.osate.org/result/Result" analysis="latency" message="AS-PE-DL-EQ-EQL">
+  <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0"/>
+  <parameters value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787001"/>
+  <parameters value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
+  <parameters value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787001"/>
+  <parameters value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787001"/>
+  <parameters value="ACED0005737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000"/>
+  <results message="Latency results for imu_activation_to_result" resultType="SUCCESS">
+    <values xsi:type="result:StringValue" value=""/>
+    <values xsi:type="result:RealValue" value="4.53"/>
+    <values xsi:type="result:RealValue" value="9.53"/>
+    <values xsi:type="result:RealValue"/>
+    <values xsi:type="result:RealValue"/>
+    <values xsi:type="result:RealValue"/>
+    <values xsi:type="result:RealValue" value="20.0"/>
+    <diagnostics diagnosticType="INFO" message="Minimum actual latency total 4,53ms is greater or equal to expected minimum end to end latency 0,000ms">
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.0"/>
+    </diagnostics>
+    <diagnostics diagnosticType="INFO" message="Maximum actual latency total 9,53ms is less or equal to expected maximum end to end latency 20,0ms">
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.0"/>
+    </diagnostics>
+    <diagnostics diagnosticType="INFO" message="Jitter of actual flow latency 4,53..9,53ms is within expected end to end latency jitter 0,000..20,0ms">
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.0"/>
+    </diagnostics>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="first sampling"/>
+      <values xsi:type="result:StringValue" value="first sampling"/>
+      <values xsi:type="result:StringValue" value="source converted_source"/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.1"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue" value="4.53"/>
+      <values xsi:type="result:RealValue" value="9.53"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="response time"/>
+      <values xsi:type="result:StringValue" value="response time"/>
+      <values xsi:type="result:StringValue" value="source converted_source"/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.1"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value=""/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@connectionInstance.12"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value="sink received"/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.0"/>
+    </subResults>
+    <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.0"/>
+  </results>
+  <results message="Latency results for filtered_imu_to_serial" resultType="SUCCESS">
+    <values xsi:type="result:StringValue" value=""/>
+    <values xsi:type="result:RealValue" value="5.698"/>
+    <values xsi:type="result:RealValue" value="44.698"/>
+    <values xsi:type="result:RealValue"/>
+    <values xsi:type="result:RealValue"/>
+    <values xsi:type="result:RealValue"/>
+    <values xsi:type="result:RealValue" value="100.0"/>
+    <diagnostics diagnosticType="INFO" message="Minimum actual latency total 5,70ms is greater or equal to expected minimum end to end latency 0,000ms">
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.1"/>
+    </diagnostics>
+    <diagnostics diagnosticType="INFO" message="Maximum actual latency total 44,7ms is less or equal to expected maximum end to end latency 100,0ms">
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.1"/>
+    </diagnostics>
+    <diagnostics diagnosticType="INFO" message="Jitter of actual flow latency 5,70..44,7ms is within expected end to end latency jitter 0,000..100,0ms">
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.1"/>
+    </diagnostics>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="first sampling"/>
+      <values xsi:type="result:StringValue" value="first sampling"/>
+      <values xsi:type="result:StringValue" value="source filtered_source"/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.2"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue" value="0.5"/>
+      <values xsi:type="result:RealValue" value="20.0"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="processing time"/>
+      <values xsi:type="result:StringValue" value="deadline"/>
+      <values xsi:type="result:StringValue" value="source filtered_source"/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.2"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value=""/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@connectionInstance.2"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="sampling"/>
+      <values xsi:type="result:StringValue" value="sampling"/>
+      <values xsi:type="result:StringValue" value="path telemetry_path"/>
+      <diagnostics diagnosticType="INFO" message="Min: Best case: 0 ms sampling delay">
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.4"/>
+      </diagnostics>
+      <diagnostics diagnosticType="INFO" message="Synchronous communication on same platform">
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.4"/>
+      </diagnostics>
+      <diagnostics diagnosticType="INFO" message="Max: Worst case: Round up sampling delay to period 20.0ms">
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.4"/>
+      </diagnostics>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.4"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue" value="0.5"/>
+      <values xsi:type="result:RealValue" value="20.0"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="processing time"/>
+      <values xsi:type="result:StringValue" value="deadline"/>
+      <values xsi:type="result:StringValue" value="path telemetry_path"/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.8/@componentInstance.4"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value=""/>
+      <diagnostics diagnosticType="INFO" message="Adding latency subtotal from protocols and hardware - shown with ()">
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@connectionInstance.13"/>
+      </diagnostics>
+      <subResults>
+        <values xsi:type="result:RealValue" value="4.6979999999999995"/>
+        <values xsi:type="result:RealValue" value="4.6979999999999995"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:StringValue" value="transmission time"/>
+        <values xsi:type="result:StringValue" value="transmission time"/>
+        <values xsi:type="result:StringValue" value=""/>
+        <diagnostics diagnosticType="INFO" message="Using data transfer time">
+          <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.2"/>
+        </diagnostics>
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.2"/>
+      </subResults>
+      <subResults>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:StringValue" value="queued"/>
+        <values xsi:type="result:StringValue" value="queued"/>
+        <values xsi:type="result:StringValue" value=""/>
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.2"/>
+      </subResults>
+      <subResults>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:RealValue"/>
+        <values xsi:type="result:StringValue" value="sampling protocol/bus"/>
+        <values xsi:type="result:StringValue" value="sampling protocol/bus"/>
+        <values xsi:type="result:StringValue" value=""/>
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.2"/>
+      </subResults>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@connectionInstance.13"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="queued"/>
+      <values xsi:type="result:StringValue" value="queued"/>
+      <values xsi:type="result:StringValue" value="sink telemetry_sink"/>
+      <diagnostics diagnosticType="INFO" message="Assume best case empty queue">
+        <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.7"/>
+      </diagnostics>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.7"/>
+    </subResults>
+    <subResults>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:RealValue"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value="no sampling/queuing latency"/>
+      <values xsi:type="result:StringValue" value="sink telemetry_sink"/>
+      <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@componentInstance.7"/>
+    </subResults>
+    <modelElement href="../../robot_system_robot_impl_Instance.aaxl2#/0/@endToEndFlow.1"/>
+  </results>
+</result:AnalysisResult>
