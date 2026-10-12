@@ -4,7 +4,6 @@ public
 with robot_data;
 with SEI;
 
-
 process firmware
 	features
 		encoder_input : in data port robot_data::encoder_state.impl;
@@ -25,7 +24,7 @@ process firmware
 		telemetry_output_flow: flow source telemetry_output;
 
 end firmware;
-	
+
 thread motor_control
 	features
 		encoder_input : in data port robot_data::encoder_state.impl;
@@ -51,10 +50,8 @@ end read_imu;
 subprogram convert_imu
 end convert_imu;
 
-
 subprogram filter_imu
 end filter_imu;
-
 
 thread implementation IMU_aquisition_conversion.impl
     calls
@@ -66,7 +63,6 @@ thread implementation IMU_aquisition_conversion.impl
 
         };
 end IMU_aquisition_conversion.impl;
-
 
 thread battery_acquisition
 	features
@@ -109,11 +105,11 @@ process implementation firmware.impl
 	subcomponents
   		control_task : thread motor_control
     	{ Dispatch_Protocol => Periodic;
-      	Compute_Execution_Time => 5 ms .. 5 ms;    
+      	Compute_Execution_Time => 5 ms .. 5 ms;
       	Period => 10 ms;
       	Priority => 30;
       	Deadline => 10 ms; };
-      	
+
 		imu_task: thread IMU_aquisition_conversion.impl
 		{ Dispatch_Protocol => Periodic;
 
@@ -164,18 +160,15 @@ process implementation firmware.impl
 		command_to_rx: port command_input -> rx_task.frame;
 		rx_to_guard: port rx_task.accepted -> command_guard_task.command;
 
-
   	flows
     	imu_input_flow: flow sink
-        aquisition -> C3 -> imu_task.measurement_sink;      
+        aquisition -> C3 -> imu_task.measurement_sink;
         converted_output_flow: flow source
     	imu_task.converted_source -> C4 -> conversion;
 		telemetry_output_flow: flow source
 		imu_task.converted_source -> imu_to_telemetry ->
 		telemetry_task.telemetry_path -> telemetry_to_output -> telemetry_output;
 
-
 end firmware.impl;
-
 
 end esp32_software;

@@ -25,7 +25,7 @@ memory storage
 		Memory_Size => 32 GByte;
 end storage;
 
--- Tipo de sensor a definir (LIDAR, camera RGB-D, etc.); modelado como fonte generica.
+-- Generic perception source; sensor not selected in this version.
 device perception_sensor
 	features
 		state: out data port robot_data::perception_raw;

@@ -1,6 +1,5 @@
-// -- adicionado pelo GPT Astra
-// Draft requirements: computed values need analysis/test evidence, not zero defaults.
-// Current deadlines are design assumptions; no requirement is claimed as verified.
+// Computed values require analysis or test evidence.
+// Deadlines are assumptions; requirements are not automatically verified.
 
 system requirements MobileRobotV4_ESP32_Timing for esp32_software::firmware.impl [
 	requirement Deadline_control_task: "control_task response deadline" for control_task [
@@ -109,4 +108,3 @@ system requirements MobileRobotV4_RAM for raspberry_hardware::raspberry_platform
 		value predicate observedMinimumFraction >= minimumAvailableFraction and observedMinimumFraction <= 1.0
 	]
 ]
-// -- Adicionado pelo GPT Astra.

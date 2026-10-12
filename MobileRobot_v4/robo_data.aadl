@@ -12,17 +12,14 @@ end desired_wheel_speed;
 data motor_drive
 end motor_drive;
 
--- raw imu data
 data imu_raw
 end imu_raw;
 
--- converted sample (measurement units, m/s^2 and rad/s)
+-- Converted acceleration (m/s^2) and angular velocity (rad/s).
 data imu_sample
 end imu_sample;
 
--- Variacao assinada das contagens desde a leitura anterior.
--- Um campo por roda; valores positivos representam avanco.
--- Intervalo nominal entre leituras: 10 ms.
+-- Signed encoder deltas per wheel; positive means forward; sample interval 10 ms.
 data implementation encoder_state.impl
 	subcomponents
 		R_wheel_encoder: data Base_Types::Integer_16;
@@ -31,9 +28,7 @@ data implementation encoder_state.impl
 		Data_Size => 4 Bytes;
 end encoder_state.impl;
 
--- Angular velocity: rad/s
--- Positive numbers: foward
--- Negative numbers: backwards
+-- Angular velocity (rad/s): positive forward, negative backward.
 data implementation desired_wheel_speed.impl
 	subcomponents
 		R_wheel_speed: data Base_Types::Float_32;
@@ -42,11 +37,8 @@ data implementation desired_wheel_speed.impl
 		Data_Size => 8 Bytes;
 end desired_wheel_speed.impl;
 
-
--- Normalized commands between -1.0 and +1.0
--- Signal indicates rotation direction
--- Absolute value indicates duty cycle: 0.6 = 60%
--- For values 0: depends on driver (h-bridge).
+-- Signed duty cycle [-1, 1]; sign sets direction, magnitude sets PWM duty.
+-- Zero-command behavior depends on the H-bridge.
 data implementation motor_drive.impl
 	subcomponents
 		R_wheel_command: data Base_Types::Float_32;
@@ -105,14 +97,12 @@ data implementation encoder_totals.impl
 		Data_Size => 8 Bytes;
 end encoder_totals.impl;
 
-
 data implementation battery_raw.impl
 	subcomponents
 		adc_count: data Base_Types::Unsigned_16;
 	properties
 		Data_Size => 2 Bytes;
 end battery_raw.impl;
-
 
 data implementation battery_state.impl
 	subcomponents
@@ -134,7 +124,6 @@ data implementation command_frame.impl
 	properties
 		Data_Size => 20 Bytes;
 end command_frame.impl;
-
 
 data implementation validated_command.impl
 	subcomponents
@@ -161,8 +150,8 @@ data implementation telemetry_frame.impl
 		Data_Size => 54 Bytes;
 end telemetry_frame.impl;
 
--- Sensor de percepcao ainda a definir (LIDAR, camera RGB-D, etc.).
--- Declarado sem .impl: estrutura interna depende do sensor escolhido.
+-- Generic perception data; sensor not selected in this version.
+-- Payload structure depends on the sensor.
 data perception_raw
 end perception_raw;
 
@@ -187,7 +176,7 @@ end agent_directive;
 data agent_feedback
 end agent_feedback;
 
--- Pose 2D no referencial do mapa/odom.
+-- 2D pose in map/odom frame.
 data implementation pose2d.impl
 	subcomponents
 		x: data Base_Types::Float_32;
@@ -197,7 +186,7 @@ data implementation pose2d.impl
 		Data_Size => 12 Bytes;
 end pose2d.impl;
 
--- Estado fundido (odometria/estado): pose estimada + velocidades correntes.
+-- Estimated pose and velocities.
 data implementation odometry_state.impl
 	subcomponents
 		pose: data pose2d.impl;
@@ -207,7 +196,7 @@ data implementation odometry_state.impl
 		Data_Size => 20 Bytes;
 end odometry_state.impl;
 
--- Saida do Nav2 no referencial do robo (equivalente ao cmd_vel do ROS 2).
+-- Robot-frame velocity command (ROS2 cmd_vel).
 data implementation velocity_command.impl
 	subcomponents
 		linear_x: data Base_Types::Float_32;
@@ -216,7 +205,6 @@ data implementation velocity_command.impl
 		Data_Size => 8 Bytes;
 end velocity_command.impl;
 
--- Meta de navegacao enviada pela integracao Jason-ROS 2 ao Nav2.
 data implementation nav_goal.impl
 	subcomponents
 		target: data pose2d.impl;
@@ -225,7 +213,7 @@ data implementation nav_goal.impl
 		Data_Size => 16 Bytes;
 end nav_goal.impl;
 
--- Status do Nav2 sobre a meta corrente (idle/running/succeeded/aborted).
+-- Goal status: idle/running/succeeded/aborted.
 data implementation nav_status.impl
 	subcomponents
 		goal_id: data Base_Types::Unsigned_32;
@@ -234,7 +222,6 @@ data implementation nav_status.impl
 		Data_Size => 6 Bytes;
 end nav_status.impl;
 
--- Diretiva de alto nivel do agente Jason para a integracao Jason-ROS 2.
 data implementation agent_directive.impl
 	subcomponents
 		goal: data nav_goal.impl;
@@ -243,7 +230,6 @@ data implementation agent_directive.impl
 		Data_Size => 20 Bytes;
 end agent_directive.impl;
 
--- Retorno da integracao Jason-ROS 2 para o agente (resultado da tarefa).
 data implementation agent_feedback.impl
 	subcomponents
 		task_id: data Base_Types::Unsigned_32;
@@ -251,6 +237,5 @@ data implementation agent_feedback.impl
 	properties
 		Data_Size => 10 Bytes;
 end agent_feedback.impl;
-
 
 end robot_data;
