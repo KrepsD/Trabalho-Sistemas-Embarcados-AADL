@@ -2,17 +2,11 @@ package raspberry_software
 public
 
 with robot_data;
--- adicionado pelo GPT Astra
 with SEI;
--- Adicionado pelo GPT Astra.
 
-
--- Pilha de software do Raspberry Pi: um process por bloco do diagrama de blocos
--- (Odometria/estado, SLAM/localizacao, Jason/agentes, Integracao Jason-ROS 2,
--- Nav2 e javino_ros_bridge).
--- adicionado pelo GPT Astra
--- Memory accounting placeholders only; no execution or data path is implemented here.
--- Planning estimates, not measured RAM. One MiB = 1048576 bytes.
+-- Application functions are abstracted as threads.
+-- RAM accounting only; no executable tasks.
+-- RAM estimates, not measurements; 1 MiB = 1048576 bytes.
 process chonos_memory
 	properties
 		SEI::RAMBudget => 314572800.0 Bytes; -- 300 MiB: OS/base services.
@@ -28,8 +22,6 @@ process shared_runtime_memory
 		SEI::RAMBudget => 104857600.0 Bytes; -- 100 MiB shared ROS2/DDS/libraries, once.
 end shared_runtime_memory;
 
--- Adicionado pelo GPT Astra.
-
 process navigation_stack
 	features
 		perception_input: in data port robot_data::perception_raw;
@@ -44,9 +36,7 @@ process navigation_stack
 		telemetry_to_odometry_flow: flow sink telemetry_input;
 end navigation_stack;
 
--- javino_ros_bridge: ponte serial entre o ROS 2 (Raspberry) e o firmware do ESP32.
--- Converte velocity_command (cmd_vel) em command_frame (por roda) e decodifica
--- telemetry_frame recebido do ESP32, repassando-o para a Odometria/estado.
+-- Serial bridge: wheel commands to ESP32, telemetry to odometry.
 thread javino_ros_bridge
 	features
 		velocity_in: in data port robot_data::velocity_command.impl;
@@ -61,7 +51,7 @@ thread javino_ros_bridge
 		telemetry_flow: flow path telemetry_in -> telemetry_out;
 end javino_ros_bridge;
 
--- Odometria/estado: funde a telemetria do ESP32 (encoders + IMU) em uma estimativa de pose/velocidade.
+-- Odometry from encoder and IMU telemetry.
 thread odometry_estimation
 	features
 		telemetry_in: in event data port robot_data::telemetry_frame.impl
@@ -72,7 +62,7 @@ thread odometry_estimation
 		odom_ingest: flow sink telemetry_in;
 end odometry_estimation;
 
--- SLAM/localizacao: combina percepcao + odometria para estimar a pose no mapa.
+-- SLAM uses perception and odometry to estimate map pose.
 thread slam_localization
 	features
 		perception_in: in data port robot_data::perception_raw;
@@ -82,7 +72,7 @@ thread slam_localization
 		pose_flow: flow path perception_in -> pose_out;
 end slam_localization;
 
--- Nav2: planejamento/controle de navegacao; produz comando de velocidade (cmd_vel).
+-- Nav2 produces velocity commands.
 thread nav2_stack
 	features
 		pose_in: in data port robot_data::pose2d.impl;
@@ -94,7 +84,7 @@ thread nav2_stack
 		velocity_flow: flow path pose_in -> velocity_out;
 end nav2_stack;
 
--- Jason/agentes: raciocinio BDI de alto nivel (tarefas/objetivos do robo).
+-- Jason provides high-level agent decisions.
 thread jason_agent
 	features
 		feedback_in: in data port robot_data::agent_feedback.impl;
@@ -103,7 +93,7 @@ thread jason_agent
 		directive_flow: flow source directive_out;
 end jason_agent;
 
--- Integracao Jason-ROS 2: traduz diretivas do agente em metas do Nav2 e vice-versa.
+-- Maps agent directives to Nav2 goals and returns status.
 thread jason_ros2_bridge
 	features
 		directive_in: in data port robot_data::agent_directive.impl;
@@ -173,8 +163,6 @@ process implementation navigation_stack.impl
 		bridge_to_output: port bridge_task.command_out -> command_output;
 
 	flows
-		-- adicionado pelo GPT Astra
-		-- Flow implementations include their external port endpoints.
 		perception_to_command_flow: flow path
 		perception_input -> perception_to_slam -> slam_task.pose_flow -> slam_to_nav2 ->
 		nav2_task.velocity_flow -> nav2_to_bridge -> bridge_task.command_flow ->
@@ -183,19 +171,19 @@ process implementation navigation_stack.impl
 		telemetry_to_odometry_flow: flow sink
 		telemetry_input -> telemetry_to_bridge -> bridge_task.telemetry_flow -> bridge_to_odom ->
 		odom_task.odom_ingest;
-		-- Adicionado pelo GPT Astra.
--- adicionado pelo GPT Astra
 	properties
-		-- Private/incremental application allowances; do not add a parent process total.
-		-- JaCaMo includes one JVM; bridge budgets do not include another JVM.
+		-- Pinned fixed-priority response bounds; port queues excluded.
+		-- Recompute after changing WCET, periods, priorities or bindings.
+		SEI::Response_Time => 300 us .. 800 us applies to bridge_task;
+		SEI::Response_Time => 200 us .. 1400 us applies to odom_task;
+		-- Private application RAM; no duplicate parent budget.
+		-- One JVM in JaCaMo; bridges exclude JVM duplication.
 		SEI::RAMBudget => 262144000.0 Bytes applies to jason_task; -- 250 MiB.
 		SEI::RAMBudget => 262144000.0 Bytes applies to nav2_task; -- 250 MiB.
 		SEI::RAMBudget => 209715200.0 Bytes applies to slam_task; -- 200 MiB.
 		SEI::RAMBudget => 41943040.0 Bytes applies to odom_task; -- 40 MiB.
 		SEI::RAMBudget => 31457280.0 Bytes applies to bridge_task; -- 30 MiB.
 		SEI::RAMBudget => 31457280.0 Bytes applies to integration_task; -- 30 MiB.
-
--- Adicionado pelo GPT Astra.
 
 end navigation_stack.impl;
 

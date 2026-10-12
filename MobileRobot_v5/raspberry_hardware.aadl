@@ -2,9 +2,7 @@ package raspberry_hardware
 public
 
 with Processor_Properties;
--- adicionado pelo GPT Astra
 with SEI;
--- Adicionado pelo GPT Astra.
 
 with robot_data;
 with esp32_hardware;
@@ -20,11 +18,10 @@ end rpi_cpu;
 
 memory ram
 	properties
-		Memory_Size => 1 GByte;
--- adicionado pelo GPT Astra
+		-- Binary nominal capacity; usable RAM must be measured.
+		Memory_Size => 1 GiByte;
 		-- Nominal capacity matches Memory_Size; refine to usable RAM after deployment.
-		SEI::RAMCapacity => 1.0 GByte;
--- Adicionado pelo GPT Astra.
+		SEI::RAMCapacity => 1.0 GiByte;
 
 end ram;
 
@@ -34,7 +31,7 @@ memory storage
 		Memory_Size => 32 GByte;
 end storage;
 
--- Tipo de sensor a definir (LIDAR, camera RGB-D, etc.); modelado como fonte generica.
+-- Generic perception source; sensor not selected in this version.
 device perception_sensor
 	features
 		state: out data port robot_data::perception_raw;

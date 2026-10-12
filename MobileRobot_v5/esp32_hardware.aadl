@@ -10,7 +10,7 @@ processor cpu
     	i2c_access: requires bus access I2C;
 		serial_access: requires bus access UART;
 
-	properties    
+	properties
 		Scheduling_Protocol=>(POSIX_1003_HIGHEST_PRIORITY_FIRST_PROTOCOL);
 		Processor_Properties::Processor_Frequency => 240 MHz;
 end cpu;
@@ -21,12 +21,11 @@ bus I2C
 		SEI::BandWidthCapacity => 100000.0 bitsps;
 
 		SEI::BandWidthBudget => 20000.0 bitsps;
-		
+
 		Communication_Properties::Transmission_Time =>
     	[Fixed => 450 us .. 450 us;
      	PerByte => 90 us .. 90 us;];
 end I2C;
-
 
 bus UART
 	properties
@@ -37,7 +36,6 @@ bus UART
 		 PerByte => 87 us .. 87 us;];
 end UART;
 
-
 device battery_sensor
 	features
 		state: out data port robot_data::battery_raw.impl;
@@ -46,6 +44,9 @@ end battery_sensor;
 memory ram
 	properties
 		Memory_Size => 520 KByte;
+		-- Assumed 320 KiB data-RAM pool; not measured free heap.
+		-- Excludes platform/code reservations; refine using the linker map.
+		SEI::RAMCapacity => 327680.0 Bytes;
 end ram;
 
 memory flash
@@ -92,7 +93,6 @@ system implementation esp_platform.impl
     	i2c_to_core_1:
         	bus access i2c_access <-> core_1.i2c_access;
 
-		
 end esp_platform.impl;
 
 end esp32_hardware;

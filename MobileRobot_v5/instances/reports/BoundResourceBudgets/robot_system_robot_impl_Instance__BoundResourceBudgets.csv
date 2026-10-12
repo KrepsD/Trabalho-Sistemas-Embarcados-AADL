@@ -1,0 +1,134 @@
+Bound Resource Budget Analysis Report
+
+
+Processor Summary Report: 
+** Processor controller_board.core_0 has no MIPS capacity but has bound components.
+*   Processor controller_board.core_0: Bound app's have no MIPS budget.
+** Processor controller_board.core_1 has no MIPS capacity but has bound components.
+*   Processor controller_board.core_1: Bound app's have no MIPS budget.
+** Processor nav_computer.core_0 has no MIPS capacity but has bound components.
+*   Processor nav_computer.core_0: Bound app's have no MIPS budget.
+** Processor nav_computer.core_1 has no MIPS capacity but has bound components.
+*   Processor nav_computer.core_1: Bound app's have no MIPS budget.
+** Processor nav_computer.core_2 has no MIPS capacity but has bound components.
+*   Processor nav_computer.core_2: Bound app's have no MIPS budget.
+** Processor nav_computer.core_3 has no MIPS capacity but has bound components.
+*   Processor nav_computer.core_3: Bound app's have no MIPS budget.
+
+Memory Summary Report: 
+  Total Memory 245.76000000000002 KB of bound tasks within Memory capacity 520.0 KB of controller_board.esp_memory
+  Total RAM 245.76000000000002 KB of bound tasks within Memory capacity 327.68 KB of controller_board.esp_memory
+  No application components bound to controller_board.esp_flash with Memory capacity 4000,000 KBYTE
+**   Total Memory 1478492.1600000001 KB of bounds tasks exceeds Memory capacity 1073741.824 KB of nav_computer.rpi_ram
+**   Total Memory 1478492.1600000001 KB of bounds tasks exceeds Memory capacity 1073741.824 KB of nav_computer.rpi_ram
+  No application components bound to nav_computer.rpi_storage with Memory capacity 32000000,000 KBYTE
+
+
+Detailed Workload Report:  for Processor controller_board.core_0 with Capacity 0,000 MIPS
+
+Component,Budget,Actual
+thread controller_firmware.battery_task, 0,000 MIPS,0,000 MIPS,
+thread controller_firmware.telemetry_task, 0,000 MIPS,0,000 MIPS,
+thread controller_firmware.rx_task, 0,000 MIPS,0,000 MIPS,
+thread controller_firmware.command_guard_task, 0,000 MIPS,0,000 MIPS,
+Total,,0,000 MIPS
+
+
+Detailed Workload Report:  for Processor controller_board.core_1 with Capacity 0,000 MIPS
+
+Component,Budget,Actual
+thread controller_firmware.control_task, 0,000 MIPS,0,000 MIPS,
+thread controller_firmware.imu_task, 0,000 MIPS,0,000 MIPS,
+Total,,0,000 MIPS
+
+
+Detailed Workload Report:  for Processor nav_computer.core_0 with Capacity 0,000 MIPS
+
+Component,Budget,Actual
+thread nav_stack.bridge_task, 0,000 MIPS,0,000 MIPS,
+thread nav_stack.odom_task, 0,000 MIPS,0,000 MIPS,
+Total,,0,000 MIPS
+
+
+Detailed Workload Report:  for Processor nav_computer.core_1 with Capacity 0,000 MIPS
+
+Component,Budget,Actual
+thread nav_stack.slam_task, 0,000 MIPS,0,000 MIPS,
+Total,,0,000 MIPS
+
+
+Detailed Workload Report:  for Processor nav_computer.core_2 with Capacity 0,000 MIPS
+
+Component,Budget,Actual
+thread nav_stack.nav2_task, 0,000 MIPS,0,000 MIPS,
+Total,,0,000 MIPS
+
+
+Detailed Workload Report:  for Processor nav_computer.core_3 with Capacity 0,000 MIPS
+
+Component,Budget,Actual
+thread nav_stack.integration_task, 0,000 MIPS,0,000 MIPS,
+thread nav_stack.jason_task, 0,000 MIPS,0,000 MIPS,
+Total,,0,000 MIPS
+
+
+Detailed Workload Report:  for memory controller_board.esp_memory with Capacity 520,000 KBYTE
+
+Component,Budget,Actual
+esp_kernel_ram, 131.072 KBytesps,131.072 KBytesps,No actual. Added budget to total.
+esp_driver_ram, 32.768 KBytesps,32.768 KBytesps,No actual. Added budget to total.
+esp_communication_ram, 16.384 KBytesps,16.384 KBytesps,No actual. Added budget to total.
+esp_heap_ram, 32.768 KBytesps,32.768 KBytesps,No actual. Added budget to total.
+controller_firmware.control_task, 6.144 KBytesps,6.144 KBytesps,No actual. Added budget to total.
+controller_firmware.imu_task, 8.192 KBytesps,8.192 KBytesps,No actual. Added budget to total.
+controller_firmware.battery_task, 3.072 KBytesps,3.072 KBytesps,No actual. Added budget to total.
+controller_firmware.telemetry_task, 6.144 KBytesps,6.144 KBytesps,No actual. Added budget to total.
+controller_firmware.rx_task, 6.144 KBytesps,6.144 KBytesps,No actual. Added budget to total.
+controller_firmware.command_guard_task, 3.072 KBytesps,3.072 KBytesps,No actual. Added budget to total.
+Total, ,245,760 KBYTE,
+
+
+Detailed Workload Report:  for memory controller_board.esp_memory with Capacity 327,680 KBYTE
+
+Component,Budget,Actual
+esp_kernel_ram, 131.072 KBytesps,131.072 KBytesps,No actual. Added budget to total.
+esp_driver_ram, 32.768 KBytesps,32.768 KBytesps,No actual. Added budget to total.
+esp_communication_ram, 16.384 KBytesps,16.384 KBytesps,No actual. Added budget to total.
+esp_heap_ram, 32.768 KBytesps,32.768 KBytesps,No actual. Added budget to total.
+controller_firmware.control_task, 6.144 KBytesps,6.144 KBytesps,No actual. Added budget to total.
+controller_firmware.imu_task, 8.192 KBytesps,8.192 KBytesps,No actual. Added budget to total.
+controller_firmware.battery_task, 3.072 KBytesps,3.072 KBytesps,No actual. Added budget to total.
+controller_firmware.telemetry_task, 6.144 KBytesps,6.144 KBytesps,No actual. Added budget to total.
+controller_firmware.rx_task, 6.144 KBytesps,6.144 KBytesps,No actual. Added budget to total.
+controller_firmware.command_guard_task, 3.072 KBytesps,3.072 KBytesps,No actual. Added budget to total.
+Total, ,245,760 KBYTE,
+
+
+Detailed Workload Report:  for memory nav_computer.rpi_ram with Capacity 1073741,824 KBYTE
+
+Component,Budget,Actual
+nav_stack.bridge_task, 31457.28 KBytesps,31457.28 KBytesps,No actual. Added budget to total.
+nav_stack.odom_task, 41943.04 KBytesps,41943.04 KBytesps,No actual. Added budget to total.
+nav_stack.nav2_task, 262144.0 KBytesps,262144.0 KBytesps,No actual. Added budget to total.
+nav_stack.slam_task, 209715.2 KBytesps,209715.2 KBytesps,No actual. Added budget to total.
+nav_stack.integration_task, 31457.28 KBytesps,31457.28 KBytesps,No actual. Added budget to total.
+nav_stack.jason_task, 262144.0 KBytesps,262144.0 KBytesps,No actual. Added budget to total.
+chonos_ram_cost, 314572.8 KBytesps,314572.8 KBytesps,No actual. Added budget to total.
+perception_ram_cost, 220200.96 KBytesps,220200.96 KBytesps,No actual. Added budget to total.
+shared_runtime_ram_cost, 104857.6 KBytesps,104857.6 KBytesps,No actual. Added budget to total.
+Total, ,1478492,160 KBYTE,
+
+
+Detailed Workload Report:  for memory nav_computer.rpi_ram with Capacity 1073741,824 KBYTE
+
+Component,Budget,Actual
+nav_stack.bridge_task, 31457.28 KBytesps,31457.28 KBytesps,No actual. Added budget to total.
+nav_stack.odom_task, 41943.04 KBytesps,41943.04 KBytesps,No actual. Added budget to total.
+nav_stack.nav2_task, 262144.0 KBytesps,262144.0 KBytesps,No actual. Added budget to total.
+nav_stack.slam_task, 209715.2 KBytesps,209715.2 KBytesps,No actual. Added budget to total.
+nav_stack.integration_task, 31457.28 KBytesps,31457.28 KBytesps,No actual. Added budget to total.
+nav_stack.jason_task, 262144.0 KBytesps,262144.0 KBytesps,No actual. Added budget to total.
+chonos_ram_cost, 314572.8 KBytesps,314572.8 KBytesps,No actual. Added budget to total.
+perception_ram_cost, 220200.96 KBytesps,220200.96 KBytesps,No actual. Added budget to total.
+shared_runtime_ram_cost, 104857.6 KBytesps,104857.6 KBytesps,No actual. Added budget to total.
+Total, ,1478492,160 KBYTE,

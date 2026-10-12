@@ -16,12 +16,16 @@ abstract imu_result_observer
             { Latency => 0 ms .. 0 ms; };
 end imu_result_observer;
 
-
 system robot
 end robot;
 
 system implementation robot.impl
 	subcomponents
+		-- Firmware RAM accounting; no extra tasks.
+		esp_kernel_ram: process esp32_software::zephyr_memory;
+		esp_driver_ram: process esp32_software::driver_memory;
+		esp_communication_ram: process esp32_software::communication_memory;
+		esp_heap_ram: process esp32_software::heap_memory;
 		controller_board: system esp32_hardware::esp_platform.impl;
 		controller_firmware: process esp32_software::firmware.impl;
 		encoders: device esp32_hardware::wheel_encoders;
@@ -34,22 +38,18 @@ system implementation robot.impl
 		nav_computer: system raspberry_hardware::raspberry_platform.impl;
 		nav_stack: process raspberry_software::navigation_stack.impl;
 		perception: device raspberry_hardware::perception_sensor;
--- adicionado pelo GPT Astra
-		-- RAM accounting only; these placeholders add no scheduled tasks.
+		-- Platform RAM accounting; no extra tasks.
 		chonos_ram_cost: process raspberry_software::chonos_memory;
 		perception_ram_cost: process raspberry_software::perception_memory;
 		shared_runtime_ram_cost: process raspberry_software::shared_runtime_memory;
--- Adicionado pelo GPT Astra.
 
-
-		
     connections
     	encoder_to_firmware:
     	port encoders.state -> controller_firmware.encoder_input;
 
 		firmware_to_actuation:
     	port controller_firmware.motor_output -> actuation.command;
-    	
+
 		commands_to_firmware:
 		port nav_stack.command_output -> controller_firmware.command_input;
 
@@ -67,19 +67,19 @@ system implementation robot.impl
 
 		nav_computer_serial_access:
 		bus access nav_computer.serial_access <-> serial_link;
-    	
+
     	imu_to_firmware:
     	port imu.state -> controller_firmware.aquisition;
-    	
+
     	imu_i2c_access:
     	bus access imu.i2c_access <-> imu_i2c;
-		
+
 		board_i2c_access:
     	bus access controller_board.i2c_access <-> imu_i2c;
-    		
+
     	converted_to_observer:
     	port controller_firmware.conversion -> imu_result.sample;
-    		 		
+
     flows
         imu_activation_to_result: end to end flow
     	controller_firmware.converted_output_flow ->
@@ -89,14 +89,26 @@ system implementation robot.impl
 		controller_firmware.telemetry_output_flow ->
 		telemetry_to_stack -> nav_stack.telemetry_to_odometry_flow;
 
-		
 	properties
--- adicionado pelo GPT Astra
-		-- 800 MiB application threads + 610 MiB support = 1410 MiB provisional demand.
-		-- nav_stack threads inherit this binding. No RAMActual is claimed.
+		-- Bind leaves only: 32 KiB private tasks + 208 KiB shared/runtime = 240 KiB.
+		Actual_Memory_Binding => (reference (controller_board.esp_memory))
+		applies to controller_firmware.control_task, controller_firmware.imu_task,
+		controller_firmware.battery_task, controller_firmware.telemetry_task,
+		controller_firmware.rx_task, controller_firmware.command_guard_task,
+		esp_kernel_ram, esp_driver_ram, esp_communication_ram, esp_heap_ram;
+		-- Shared-memory transfers stay off the external sensor bus.
+		Actual_Connection_Binding => (reference (controller_board.esp_memory))
+		applies to controller_firmware.C1, controller_firmware.imu_to_telemetry,
+		controller_firmware.encoders_to_telemetry;
+		-- Provisional copy/visibility allowance, not a measured bound.
+		Latency => 0 us .. 10 us applies to controller_firmware.C1,
+		controller_firmware.imu_to_telemetry, controller_firmware.encoders_to_telemetry;
+		-- Estimated RAM: 800 MiB applications + 610 MiB support.
+		-- Bind individual budgets; no parent total or measured RAMActual.
 		Actual_Memory_Binding => (reference (nav_computer.rpi_ram))
-		applies to nav_stack, chonos_ram_cost, perception_ram_cost, shared_runtime_ram_cost;
--- Adicionado pelo GPT Astra.
+		applies to nav_stack.bridge_task, nav_stack.odom_task, nav_stack.nav2_task,
+		nav_stack.slam_task, nav_stack.integration_task, nav_stack.jason_task,
+		chonos_ram_cost, perception_ram_cost, shared_runtime_ram_cost;
 		Actual_Processor_Binding =>
 		(reference (controller_board.core_0))
 		applies to controller_firmware.battery_task,
@@ -122,32 +134,30 @@ system implementation robot.impl
 		Actual_Processor_Binding =>
     	(reference (controller_board.core_1))
     	applies to controller_firmware.control_task;
-    	
+
     	Actual_Processor_Binding =>
     	(reference (controller_board.core_1))
     	applies to controller_firmware.imu_task;
-    	
+
     	Actual_Connection_Binding =>
     	(reference (imu_i2c))
     	applies to imu_to_firmware;
-    	
+
     	Communication_Properties::Transmission_Type => pull
     	applies to imu_to_firmware;
-    	
-    	-- Chosen arbitrarily
+
+    	-- Provisional allocation.
     	SEI::BandWidthBudget => 8000.0 bitsps
     	applies to imu_to_firmware;
-    	
-    	-- 1 sample read every 20ms: value range 50.0
+
     	Communication_Properties::Output_Rate =>
     	[Value_Range => 50.0 .. 50.0;
      	Rate_Unit => PerSecond;
      	Rate_Distribution => Fixed;]
     	applies to imu.state;
-    	
 
-		-- Provisional 100 ms limit: IMU task activation to serial delivery.
-		-- Includes acquisition/filtering; excludes host processing and filter phase lag.
+		-- 100 ms from IMU activation through telemetry to Raspberry odometry.
+		-- Includes host processing; excludes physical sensor age and filter phase lag.
 		Latency => 0 ms .. 100 ms applies to filtered_imu_to_serial;
 
     	Latency => 0 ms .. 20 ms
@@ -170,8 +180,7 @@ system implementation robot.impl
     	(reference (nav_computer.core_3))
     	applies to nav_stack.integration_task,
     	nav_stack.jason_task;
-    	
-    	
+
 end robot.impl;
 
 end robot_system;

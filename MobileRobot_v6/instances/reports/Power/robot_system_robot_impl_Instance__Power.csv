@@ -1,5 +1,33 @@
 
 
+Computing Electrical Power for battery_rail,
+Capacity: 60.0 W,
+Supply: 60.0 W,60.0 W from power_battery,
+Budget: 55.557 W,22.223 W for regulator_5v, 33.334 W for regulator_6v,
+battery_rail power budget total 55.557 W within capacity 60.0 W,
+budget total 55.557 W within supply 60.0 W,
+,
+Computing Electrical Power for logic_rail,
+Capacity: 20.0 W,
+Supply: 20.0 W,20.0 W from regulator_5v,
+Budget: 17.5 W,15.0 W for board_power, 2.5 W for board_power,
+logic_rail power budget total 17.5 W within capacity 20.0 W,
+budget total 17.5 W within supply 20.0 W,
+,
+Computing Electrical Power for motor_rail,
+Capacity: 30.0 W,
+Supply: 30.0 W,30.0 W from regulator_6v,
+Budget: 30.0 W,30.0 W for actuation,
+motor_rail power budget total 30.0 W within capacity 30.0 W,
+budget total 30.0 W within supply 30.0 W,
+,
+Computing Electrical Power for usb_power_rail,
+Capacity: 6.0 W,
+Supply: 6.0 W,6.0 W from board_power,
+Budget: 3.5 W,3.5 W for perception,
+usb_power_rail power budget total 3.5 W within capacity 6.0 W,
+budget total 3.5 W within supply 6.0 W,
+,
 
 
 

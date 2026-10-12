@@ -1,0 +1,50 @@
+Bus load analysis of robot_peak_30min_Instance
+
+
+"Physical Bus","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"imu_i2c","12.5","2.5","1.0","0.6"
+"serial_link","14.4","10.0","6.25","3.7"
+"perception_usb","20000.0","12500.0","10625.0","9216.0"
+"battery_rail","0.0","0.0","0.0","0.0"
+"logic_rail","0.0","0.0","0.0","0.0"
+"motor_rail","0.0","0.0","0.0","0.0"
+"usb_power_rail","0.0","0.0","0.0","0.0"
+
+"Bus imu_i2c has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"imu.state -> controller_firmware.imu_task.aquisition","","1.0","","0.6"
+
+"Bus serial_link has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"controller_firmware.telemetry_task.frame -> nav_stack.bridge_task.telemetry_in","","4.375","","2.7"
+"nav_stack.bridge_task.command_out -> controller_firmware.rx_task.frame","","1.875","","1.0"
+
+"Bus perception_usb has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+"perception.state -> nav_stack.slam_task.perception_in","","10625.0","","9216.0"
+
+"Bus battery_rail has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+
+"WARNING: Bus battery_rail has no capacity"
+"WARNING: Bus battery_rail has no bandwidth budget"
+
+"Bus logic_rail has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+
+"WARNING: Bus logic_rail has no capacity"
+"WARNING: Bus logic_rail has no bandwidth budget"
+
+"Bus motor_rail has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+
+"WARNING: Bus motor_rail has no capacity"
+"WARNING: Bus motor_rail has no bandwidth budget"
+
+"Bus usb_power_rail has data overhead of 0 bytes"
+"Bound Virtual Bus/Connection","Capacity (KB/s)","Budget (KB/s)","Required Budget (KB/s)","Actual (KB/s)"
+
+"WARNING: Bus usb_power_rail has no capacity"
+"WARNING: Bus usb_power_rail has no bandwidth budget"
+
+

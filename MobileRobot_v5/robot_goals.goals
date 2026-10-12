@@ -1,4 +1,3 @@
-// -- adicionado pelo GPT Astra
 stakeholder goals MobileRobotV5_ESP32_Goals for esp32_software::firmware.impl [
 	goal Operation: "ESP32 operation" [
 		stakeholder MobileRobotV5_Stakeholders.projectOwner
@@ -20,4 +19,3 @@ stakeholder goals MobileRobotV5_RAM_Goals for raspberry_hardware::raspberry_plat
 	]
 ]
 
-// -- Adicionado pelo GPT Astra.

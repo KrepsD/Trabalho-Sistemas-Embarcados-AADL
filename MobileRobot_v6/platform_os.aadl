@@ -1,4 +1,3 @@
--- adicionado pelo GPT Astra
 package platform_os
 public
 
@@ -20,4 +19,3 @@ virtual processor chonos_scheduler extends root_scheduler
 end chonos_scheduler;
 
 end platform_os;
--- Adicionado pelo GPT Astra.

@@ -4,6 +4,30 @@ public
 with robot_data;
 with SEI;
 
+-- Estimated RAM only; no extra tasks; Wi-Fi/BLE disabled.
+process zephyr_memory
+	properties
+		-- Kernel/runtime and system/ISR stacks; excludes application stacks.
+		SEI::RAMBudget => 131072.0 Bytes;
+end zephyr_memory;
+
+process driver_memory
+	properties
+		-- Driver state; shared frame buffers counted separately.
+		SEI::RAMBudget => 32768.0 Bytes;
+end driver_memory;
+
+process communication_memory
+	properties
+		-- Shared UART buffers, frames, port copies and queues; counted once.
+		SEI::RAMBudget => 16384.0 Bytes;
+end communication_memory;
+
+process heap_memory
+	properties
+		-- Reserved dynamic allocation pool; excludes all static allowances.
+		SEI::RAMBudget => 32768.0 Bytes;
+end heap_memory;
 
 process firmware
 	features
@@ -25,7 +49,7 @@ process firmware
 		telemetry_output_flow: flow source telemetry_output;
 
 end firmware;
-	
+
 thread motor_control
 	features
 		encoder_input : in data port robot_data::encoder_state.impl;
@@ -51,10 +75,8 @@ end read_imu;
 subprogram convert_imu
 end convert_imu;
 
-
 subprogram filter_imu
 end filter_imu;
-
 
 thread implementation IMU_aquisition_conversion.impl
     calls
@@ -66,7 +88,6 @@ thread implementation IMU_aquisition_conversion.impl
 
         };
 end IMU_aquisition_conversion.impl;
-
 
 thread battery_acquisition
 	features
@@ -109,11 +130,11 @@ process implementation firmware.impl
 	subcomponents
   		control_task : thread motor_control
     	{ Dispatch_Protocol => Periodic;
-      	Compute_Execution_Time => 5 ms .. 5 ms;    
+      	Compute_Execution_Time => 5 ms .. 5 ms;
       	Period => 10 ms;
       	Priority => 30;
       	Deadline => 10 ms; };
-      	
+
 		imu_task: thread IMU_aquisition_conversion.impl
 		{ Dispatch_Protocol => Periodic;
 
@@ -164,18 +185,25 @@ process implementation firmware.impl
 		command_to_rx: port command_input -> rx_task.frame;
 		rx_to_guard: port rx_task.accepted -> command_guard_task.command;
 
-
   	flows
     	imu_input_flow: flow sink
-        aquisition -> C3 -> imu_task.measurement_sink;      
+        aquisition -> C3 -> imu_task.measurement_sink;
         converted_output_flow: flow source
     	imu_task.converted_source -> C4 -> conversion;
 		telemetry_output_flow: flow source
 		imu_task.converted_source -> imu_to_telemetry ->
 		telemetry_task.telemetry_path -> telemetry_to_output -> telemetry_output;
 
-
+	properties
+		-- Response bound for current core-0 tasks; recompute after changes.
+		SEI::Response_Time => 500 us .. 1100 us applies to telemetry_task;
+		-- Private stack + data in KiB; shared buffers and heap excluded.
+		SEI::RAMBudget => 6144.0 Bytes applies to control_task; -- 4 stack + 2 control/encoder state.
+		SEI::RAMBudget => 8192.0 Bytes applies to imu_task; -- 4 stack + 4 acquisition/conversion/filter state.
+		SEI::RAMBudget => 3072.0 Bytes applies to battery_task; -- 2 stack + 1 ADC/state.
+		SEI::RAMBudget => 6144.0 Bytes applies to telemetry_task; -- 4 stack + 2 serializer state.
+		SEI::RAMBudget => 6144.0 Bytes applies to rx_task; -- 4 stack + 2 parser state.
+		SEI::RAMBudget => 3072.0 Bytes applies to command_guard_task; -- 2 stack + 1 validation/watchdog state.
 end firmware.impl;
-
 
 end esp32_software;

@@ -1,6 +1,5 @@
-// -- adicionado pelo GPT Astra
-// Draft requirements: computed values need analysis/test evidence, not zero defaults.
-// Current deadlines are design assumptions; no requirement is claimed as verified.
+// Computed values require analysis or test evidence.
+// Deadlines are assumptions; requirements are not automatically verified.
 
 system requirements MobileRobotV6_ESP32_Timing for esp32_software::firmware.impl [
 	see goals MobileRobotV6_ESP32_Goals
@@ -52,7 +51,7 @@ system requirements MobileRobotV6_ESP32_Timing for esp32_software::firmware.impl
 		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
-	// Interface contracts require model review and firmware/integration evidence.
+	// Interfaces require model review and integration tests.
 	requirement Interface_encoder_input: "encoder_input interface contract" for encoder_input [
 		see goal MobileRobotV6_ESP32_Goals.Operation
 		description "Accept signed wheel encoder count deltas for motor feedback."
@@ -141,7 +140,7 @@ system requirements MobileRobotV6_Raspberry_Timing for raspberry_software::navig
 		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
-	// Interface contracts require model review and firmware/integration evidence.
+	// Interfaces require model review and integration tests.
 	requirement Interface_perception_input: "perception_input interface contract" for perception_input [
 		see goal MobileRobotV6_Raspberry_Goals.Operation
 		description "Accept perception data for localization; document its format and acquisition profile before deployment."
@@ -162,7 +161,7 @@ system requirements MobileRobotV6_Raspberry_Timing for raspberry_software::navig
 
 system requirements MobileRobotV6_RAM for raspberry_hardware::raspberry_platform.impl [
 	see goals MobileRobotV6_RAM_Goals
-	// Initial scenario; lengths are in metres, image dimensions in pixels, rate in frames/s.
+	// Scenario units: metres, pixels, frames/s.
 	val roomWidthMetres = 10
 	val roomLengthMetres = 10
 	val operationDuration = 30 min
@@ -172,7 +171,7 @@ system requirements MobileRobotV6_RAM for raspberry_hardware::raspberry_platform
 	val sensorQueueDepth = 1
 	// D435i depth + CameraInfo enabled; RGB, published IR, camera IMU and point cloud disabled.
 	// Depth-to-LaserScan supplies both SLAM and Nav2; ESP32 supplies odometry sensors.
-	// These are scenario declarations, not camera/ROS2 configuration commands.
+	// Scenario assumptions, not runtime configuration.
 
 	requirement RAM_Reserve: "At least 20 percent usable RAM reserve" for rpi_ram [
 		see goal MobileRobotV6_RAM_Goals.Operation
@@ -191,14 +190,14 @@ system requirements MobileRobotV6_RAM for raspberry_hardware::raspberry_platform
 		description "With the complete architecture active, including chonOS, ROS2, D435i perception conversion, odometry, SLAM Toolbox, Nav2, Jason and both bridges, maintain Linux MemAvailable/MemTotal at or above 0.20 throughout 30 continuous minutes of mapping and navigation in a 10 by 10 metre room. Also monitor startup. Record sampling interval, camera profile, map settings and all driver/DDS queues; sensor queues target the latest sample. Sampling does not prove absence of all transient peaks."
 		value predicate observedMinimumFraction >= minimumAvailableFraction and observedMinimumFraction <= 1.0
 	]
-	// Interface contracts require model review and firmware/integration evidence.
+	// Interfaces require model review and integration tests.
 	requirement Interface_serial_access: "serial_access interface contract" for serial_access [
 		see goal MobileRobotV6_RAM_Goals.Operation
 		description "Provide UART bus access for the command and telemetry link to the ESP32."
 		informal predicate "Inspect interface type, direction and connections; verify behavior in the integration test."
 	]
 
-	// Added platform interface contracts; verification requires analysis and hardware evidence.
+	// Platform interfaces require analysis and hardware verification.
 	requirement Interface_Supply: "Supply interface contract" for Supply [
 		see goal MobileRobotV6_RAM_Goals.Operation
 		description "Supply regulated 5 V to the Raspberry board, including its downstream USB power allocation."
@@ -216,4 +215,3 @@ system requirements MobileRobotV6_RAM for raspberry_hardware::raspberry_platform
 	]
 
 ]
-// -- Adicionado pelo GPT Astra.

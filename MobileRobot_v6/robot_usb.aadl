@@ -1,4 +1,3 @@
--- adicionado pelo GPT Astra
 package robot_usb
 public
 
@@ -10,7 +9,7 @@ end USB;
 
 bus implementation USB.usb3_depth
 	properties
-		-- Conservative payload allowance retained at 20 MB/s; not USB 3 line rate.
+		-- Assumed 20 MB/s payload capacity; not USB 3 line rate.
 		SEI::BandWidthCapacity => 160000000.0 bitsps;
 		SEI::BandWidthBudget => 100000000.0 bitsps;
 		-- Effective byte time includes an allowance for protocol overhead.
@@ -21,4 +20,3 @@ bus implementation USB.usb3_depth
 end USB.usb3_depth;
 
 end robot_usb;
--- Adicionado pelo GPT Astra.

@@ -1,4 +1,3 @@
-<!-- -- adicionado pelo GPT Astra -->
 # Preliminary RAM budget
 
 Status: engineering allowances, NOT measurements or published benchmarks.
@@ -73,9 +72,9 @@ process, and 100 MiB on a shared-runtime accounting process. The 60 MiB bridges
 allowance is split equally between the two bridge threads. All are bound to
 nav_computer.rpi_ram. No duplicate parent budget or RAMActual was assigned.
 Accounting processes do not implement services, drivers, conversion or scheduling.
-Task execution times are unchanged. RAMCapacity matches the existing 1 GByte
-nominal memory model; the 1410 MiB budget exceeds that capacity, even before
-requiring 20% reserve. ReqSpec evidence remains pending.
+Task execution times are unchanged. RAMCapacity is 1 GiByte nominal; the
+1410 MiB budget exceeds capacity before requiring 20% reserve. Usable RAM
+and runtime ReqSpec evidence remain pending.
 
 Sources for accounting mechanisms, NOT for the numerical allowances:
 
@@ -84,4 +83,5 @@ Sources for accounting mechanisms, NOT for the numerical allowances:
 - https://github.com/SteveMacenski/slam_toolbox
 - https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/costmap_2d/
 - https://github.com/embedded-mas/embedded-mas
-<!-- -- Adicionado pelo GPT Astra. -->
+
+See ANALYSIS_CORRECTIONS.md for corrected binary capacities, leaf bindings and analysis limitations.

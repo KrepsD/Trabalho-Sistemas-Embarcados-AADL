@@ -1,4 +1,3 @@
--- adicionado pelo GPT Astra
 -- Copied unchanged from ProVANT Library/property_set/electricity_properties.aadl.
 property set Electricity_Properties is
 
@@ -7,7 +6,7 @@ property set Electricity_Properties is
   Peak_Current: Electricity_Properties::Current applies to (Device);
 
   Core_Voltage: Electricity_Properties::Voltage applies to (Device, Processor);
-    
+
   Resistance_Value: Electricity_Properties::Resistance applies to (device);
 
   Acquisition_Time: Time applies to (Device);
@@ -15,22 +14,22 @@ property set Electricity_Properties is
 
   Efficiency: aadlreal applies to (Device);
 
-  Device_Type: Electricity_Properties::Allowed_Device_Type applies to (Device); --
+  Device_Type: Electricity_Properties::Allowed_Device_Type applies to (Device);
   Allowed_Device_Type : type enumeration (Master, Slave);
 
-  VOH_min: Electricity_Properties::Voltage applies to (Device); --
-  VOL_max: Electricity_Properties::Voltage applies to (Device); --
-  VIH_min: Electricity_Properties::Voltage applies to (Device); --
-  VIL_max: Electricity_Properties::Voltage applies to (Device); --
+  VOH_min: Electricity_Properties::Voltage applies to (Device);
+  VOL_max: Electricity_Properties::Voltage applies to (Device);
+  VIH_min: Electricity_Properties::Voltage applies to (Device);
+  VIL_max: Electricity_Properties::Voltage applies to (Device);
 
-  Level_Shifter_VOH_min: Electricity_Properties::Voltage applies to (Device); --
-  Level_Shifter_VOL_max: Electricity_Properties::Voltage applies to (Device); --
-  Level_Shifter_VIH_min: Electricity_Properties::Voltage applies to (Device); --
-  Level_Shifter_VIL_max: Electricity_Properties::Voltage applies to (Device); --
+  Level_Shifter_VOH_min: Electricity_Properties::Voltage applies to (Device);
+  Level_Shifter_VOL_max: Electricity_Properties::Voltage applies to (Device);
+  Level_Shifter_VIH_min: Electricity_Properties::Voltage applies to (Device);
+  Level_Shifter_VIL_max: Electricity_Properties::Voltage applies to (Device);
 
-  Bus_Voltage_Range: Electricity_Properties::Voltage_Range applies to (Bus); -- Power Bus  Voltage
+  Bus_Voltage_Range: Electricity_Properties::Voltage_Range applies to (Bus);
 
-  Max_Current: Electricity_Properties::Current applies to (Device); -- define max current capability of a regulator
+  Max_Current: Electricity_Properties::Current applies to (Device);
 
   Allowed_Regulator_Type:  type enumeration (Linear, Switcher);
 
@@ -69,4 +68,3 @@ property set Electricity_Properties is
 
 end Electricity_Properties;
 
--- Adicionado pelo GPT Astra.

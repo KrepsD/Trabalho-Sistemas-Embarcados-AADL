@@ -17,6 +17,32 @@ robot_impl_Instance.controller_firmware.control_task, 10000, 10000, 5000, 0, 30,
 robot_impl_Instance.controller_firmware.imu_task, 20000, 20000, 3500, 0, 20, 8500.0, true
 
 
+Schedulability Results
+core_0: Processor robot_impl_Instance.nav_computer.core_0 is schedulable with utilization 7.0%
+thread name, period, deadline, execution time, phase offset, priority, max response time, schedulability 
+robot_impl_Instance.nav_stack.bridge_task, 20000, 20000, 800, 0, 40, 800.0, true
+robot_impl_Instance.nav_stack.odom_task, 20000, 20000, 600, 0, 35, 1400.0, true
+
+
+Schedulability Results
+core_1: Processor robot_impl_Instance.nav_computer.core_1 is schedulable with utilization 60.0%
+thread name, period, deadline, execution time, phase offset, priority, max response time, schedulability 
+robot_impl_Instance.nav_stack.slam_task, 100000, 100000, 60000, 0, 20, 60000.0, true
+
+
+Schedulability Results
+core_2: Processor robot_impl_Instance.nav_computer.core_2 is schedulable with utilization 30.0%
+thread name, period, deadline, execution time, phase offset, priority, max response time, schedulability 
+robot_impl_Instance.nav_stack.nav2_task, 50000, 50000, 15000, 0, 30, 15000.0, true
+
+
+Schedulability Results
+core_3: Processor robot_impl_Instance.nav_computer.core_3 is schedulable with utilization 18.5%
+thread name, period, deadline, execution time, phase offset, priority, max response time, schedulability 
+robot_impl_Instance.nav_stack.integration_task, 200000, 200000, 5000, 0, 15, 5000.0, true
+robot_impl_Instance.nav_stack.jason_task, 500000, 500000, 80000, 0, 5, 85000.0, true
+
+
 
 Thread binding report
 thread controller_firmware.control_task(0,000 MIPS) ==> processor controller_board.core_1(0,000MIPS) No CPU capacity
@@ -25,3 +51,9 @@ thread controller_firmware.battery_task(0,000 MIPS) ==> processor controller_boa
 thread controller_firmware.telemetry_task(0,000 MIPS) ==> processor controller_board.core_0(0,000MIPS) No CPU capacity
 thread controller_firmware.rx_task(0,000 MIPS) ==> processor controller_board.core_0(0,000MIPS) No CPU capacity
 thread controller_firmware.command_guard_task(0,000 MIPS) ==> processor controller_board.core_0(0,000MIPS) No CPU capacity
+thread nav_stack.bridge_task(0,000 MIPS) ==> processor nav_computer.core_0(0,000MIPS) No CPU capacity
+thread nav_stack.odom_task(0,000 MIPS) ==> processor nav_computer.core_0(0,000MIPS) No CPU capacity
+thread nav_stack.nav2_task(0,000 MIPS) ==> processor nav_computer.core_2(0,000MIPS) No CPU capacity
+thread nav_stack.slam_task(0,000 MIPS) ==> processor nav_computer.core_1(0,000MIPS) No CPU capacity
+thread nav_stack.integration_task(0,000 MIPS) ==> processor nav_computer.core_3(0,000MIPS) No CPU capacity
+thread nav_stack.jason_task(0,000 MIPS) ==> processor nav_computer.core_3(0,000MIPS) No CPU capacity
