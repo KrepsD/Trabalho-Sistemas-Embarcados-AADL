@@ -1,0 +1,6 @@
+assurance case MobileRobotV5_AllRequirements for robot_system::robot [
+	assurance plan Nominal for robot_system::robot.impl [
+		assure MobileRobotV5_RAMChecks
+		assure subsystem controller_firmware nav_stack nav_computer
+	]
+]

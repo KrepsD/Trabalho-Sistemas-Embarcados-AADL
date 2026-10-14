@@ -1,0 +1,5 @@
+verification plan MobileRobotV6_RAMChecks for MobileRobotV6_ModelRAM [
+	// ALISA evaluates the requirement value predicates directly.
+	claim RaspberryBudgetReserve [ ]
+	claim ESP32BudgetFits [ ]
+]

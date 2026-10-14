@@ -1,0 +1,14 @@
+verification methods MobileRobotV5_Evidence [
+	method InterfaceEvidence(feature) [
+		description "Pending interface review and integration evidence. Do not approve from type compatibility alone."
+		manual formalReview
+	]
+	method UsableRAMEvidence [
+		description "Pending usable RAM and peak demand evidence. The separate RAM budget check is only a model estimate."
+		manual formalReview
+	]
+	method RuntimeEvidence [
+		description "Pending 30-minute complete-stack measurement, startup peaks and documented perception/map/queue configuration."
+		manual formalReview
+	]
+]

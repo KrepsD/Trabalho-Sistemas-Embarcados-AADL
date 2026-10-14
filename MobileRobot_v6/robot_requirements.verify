@@ -1,0 +1,84 @@
+verification plan MobileRobotV6_ESP32_Timing_Checks for MobileRobotV6_ESP32_Timing [
+	claim Deadline_control_task [ ]
+	claim Deadline_imu_task [ ]
+	claim Deadline_battery_task [ ]
+	claim Deadline_telemetry_task [ ]
+	claim Deadline_rx_task [ ]
+	claim Deadline_command_guard_task [ ]
+	claim Interface_encoder_input [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_battery_input [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_motor_output [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_aquisition [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_conversion [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_command_input [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_telemetry_output [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+]
+
+verification plan MobileRobotV6_Raspberry_Timing_Checks for MobileRobotV6_Raspberry_Timing [
+	claim Deadline_bridge_task [ ]
+	claim Deadline_odom_task [ ]
+	claim Deadline_nav2_task [ ]
+	claim Deadline_slam_task [ ]
+	claim Deadline_integration_task [ ]
+	claim Deadline_jason_task [ ]
+	claim Interface_perception_input [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_telemetry_input [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_command_output [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+]
+
+verification plan MobileRobotV6_RAM_Checks for MobileRobotV6_RAM [
+	claim RAM_Reserve [
+		activities
+			review: MobileRobotV6_Evidence.UsableRAMEvidence()
+	]
+	claim RAM_Runtime [
+		activities
+			review: MobileRobotV6_Evidence.RuntimeEvidence()
+	]
+	claim Interface_serial_access [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_Supply [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_USB_supply [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+	claim Interface_usb_access [
+		activities
+			review: MobileRobotV6_Evidence.InterfaceEvidence()
+	]
+]

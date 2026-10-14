@@ -1,0 +1,12 @@
+assurance case MobileRobotV6_RAMCase for robot_system::robot [
+	assurance plan Nominal for robot_system::robot.impl [
+		description "Static RAM budgets, nominal scenario."
+		assure MobileRobotV6_RAMChecks
+		assume subsystem all
+	]
+	assurance plan Peak for robot_system::robot.peak_30min [
+		description "Static RAM budgets, simultaneous peak scenario."
+		assure MobileRobotV6_RAMChecks
+		assume subsystem all
+	]
+]

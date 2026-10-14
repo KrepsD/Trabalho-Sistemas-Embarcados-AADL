@@ -19,3 +19,10 @@ stakeholder goals MobileRobotV6_RAM_Goals for raspberry_hardware::raspberry_plat
 	]
 ]
 
+
+stakeholder goals MobileRobotV6_ModelRAM_Goals for robot_system::robot.impl [
+	goal Operation: "Static RAM budget feasibility" [
+		stakeholder MobileRobotV6_Stakeholders.projectOwner
+		description "Keep modeled ESP32 RAM within its data pool and preserve 20 percent of modeled Raspberry RAM capacity."
+	]
+]

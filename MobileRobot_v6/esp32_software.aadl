@@ -204,6 +204,11 @@ process implementation firmware.impl
 		SEI::RAMBudget => 6144.0 Bytes applies to telemetry_task; -- 4 stack + 2 serializer state.
 		SEI::RAMBudget => 6144.0 Bytes applies to rx_task; -- 4 stack + 2 parser state.
 		SEI::RAMBudget => 3072.0 Bytes applies to command_guard_task; -- 2 stack + 1 validation/watchdog state.
+		-- Analytical response bounds; recompute after timing or binding changes.
+		SEI::Response_Time => 5000 us .. 5000 us applies to control_task;
+		SEI::Response_Time => 200 us .. 1300 us applies to battery_task;
+		SEI::Response_Time => 500 us .. 600 us applies to rx_task;
+		SEI::Response_Time => 100 us .. 100 us applies to command_guard_task;
 end firmware.impl;
 
 end esp32_software;

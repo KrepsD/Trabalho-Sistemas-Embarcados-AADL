@@ -185,6 +185,11 @@ process implementation navigation_stack.impl
 		SEI::RAMBudget => 31457280.0 Bytes applies to bridge_task; -- 30 MiB.
 		SEI::RAMBudget => 31457280.0 Bytes applies to integration_task; -- 30 MiB.
 
+		-- Analytical response bounds; recompute after timing or binding changes.
+		SEI::Response_Time => 5000 us .. 15000 us applies to nav2_task;
+		SEI::Response_Time => 30000 us .. 60000 us applies to slam_task;
+		SEI::Response_Time => 1000 us .. 5000 us applies to integration_task;
+		SEI::Response_Time => 20000 us .. 85000 us applies to jason_task;
 end navigation_stack.impl;
 
 end raspberry_software;

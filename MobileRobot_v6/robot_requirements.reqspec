@@ -1,54 +1,66 @@
-// Computed values require analysis or test evidence.
-// Deadlines are assumptions; requirements are not automatically verified.
+// Deadlines compare annotated analytical response bounds, not measured timing.
+// Recompute response bounds after workload, scheduler or binding changes.
 
 system requirements MobileRobotV6_ESP32_Timing for esp32_software::firmware.impl [
 	see goals MobileRobotV6_ESP32_Goals
 	requirement Deadline_control_task: "control_task response deadline" for control_task [
 		see goal MobileRobotV6_ESP32_Goals.Operation
 		val deadlineLimit = 10 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_imu_task: "imu_task response deadline" for imu_task [
 		see goal MobileRobotV6_ESP32_Goals.Operation
 		val deadlineLimit = 20 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_battery_task: "battery_task response deadline" for battery_task [
 		see goal MobileRobotV6_ESP32_Goals.Operation
 		val deadlineLimit = 500 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_telemetry_task: "telemetry_task response deadline" for telemetry_task [
 		see goal MobileRobotV6_ESP32_Goals.Operation
 		val deadlineLimit = 20 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_rx_task: "rx_task response deadline" for rx_task [
 		see goal MobileRobotV6_ESP32_Goals.Operation
 		val deadlineLimit = 20 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_command_guard_task: "command_guard_task response deadline" for command_guard_task [
 		see goal MobileRobotV6_ESP32_Goals.Operation
 		val deadlineLimit = 10 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	// Interfaces require model review and integration tests.
@@ -95,49 +107,61 @@ system requirements MobileRobotV6_Raspberry_Timing for raspberry_software::navig
 	requirement Deadline_bridge_task: "bridge_task response deadline" for bridge_task [
 		see goal MobileRobotV6_Raspberry_Goals.Operation
 		val deadlineLimit = 20 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_odom_task: "odom_task response deadline" for odom_task [
 		see goal MobileRobotV6_Raspberry_Goals.Operation
 		val deadlineLimit = 20 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_nav2_task: "nav2_task response deadline" for nav2_task [
 		see goal MobileRobotV6_Raspberry_Goals.Operation
 		val deadlineLimit = 50 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_slam_task: "slam_task response deadline" for slam_task [
 		see goal MobileRobotV6_Raspberry_Goals.Operation
 		val deadlineLimit = 100 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_integration_task: "integration_task response deadline" for integration_task [
 		see goal MobileRobotV6_Raspberry_Goals.Operation
 		val deadlineLimit = 200 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	requirement Deadline_jason_task: "jason_task response deadline" for jason_task [
 		see goal MobileRobotV6_Raspberry_Goals.Operation
 		val deadlineLimit = 500 ms
-		compute worstResponse: real units AADL_Project::Time_Units
+		val worstResponse = max(#SEI::Response_Time)
 		description "Each job shall finish within deadlineLimit after dispatch, including interference and blocking. Verify under the declared workload, bindings and scheduling policy."
-		value predicate worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
+		value predicate worstResponse > 0 us
+			and worstResponse >= max(#Timing_Properties::Compute_Execution_Time)
+			and worstResponse <= deadlineLimit and #Timing_Properties::Deadline == deadlineLimit
 	]
 
 	// Interfaces require model review and integration tests.

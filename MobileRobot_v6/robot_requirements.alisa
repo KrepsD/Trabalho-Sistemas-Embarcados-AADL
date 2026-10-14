@@ -1,0 +1,10 @@
+assurance case MobileRobotV6_AllRequirements for robot_system::robot [
+	assurance plan Nominal for robot_system::robot.impl [
+		assure MobileRobotV6_RAMChecks
+		assure subsystem controller_firmware nav_stack nav_computer
+	]
+	assurance plan Peak for robot_system::robot.peak_30min [
+		assure MobileRobotV6_RAMChecks
+		assure subsystem controller_firmware nav_stack nav_computer
+	]
+]

@@ -1,0 +1,6 @@
+assurance case MobileRobotV5_RAMCase for robot_system::robot [
+	assurance plan Nominal for robot_system::robot.impl [
+		assure MobileRobotV5_RAMChecks
+		assume subsystem all
+	]
+]

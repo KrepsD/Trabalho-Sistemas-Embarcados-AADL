@@ -921,6 +921,20 @@
           <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedThreadSubcomponent.0/@ownedPropertyAssociation.2"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="5000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="5000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedPropertyAssociation.7"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>
           <ownedValue>
             <ownedValue xsi:type="aadl2:NamedValue">
@@ -1225,6 +1239,20 @@
             </ownedValue>
           </ownedValue>
           <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedThreadSubcomponent.2/@ownedPropertyAssociation.1"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="200">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="1300">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedPropertyAssociation.8"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>
@@ -1557,6 +1585,20 @@
           <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedThreadSubcomponent.4/@ownedPropertyAssociation.2"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="500">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="600">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedPropertyAssociation.9"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>
           <ownedValue>
             <ownedValue xsi:type="aadl2:NamedValue">
@@ -1693,6 +1735,20 @@
             </ownedValue>
           </ownedValue>
           <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedThreadSubcomponent.5/@ownedPropertyAssociation.2"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="100">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="100">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../esp32_software.aadl#/0/@ownedPublicSection/@ownedClassifier.15/@ownedPropertyAssociation.10"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>
@@ -2359,6 +2415,20 @@
           <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedThreadSubcomponent.2/@ownedPropertyAssociation.2"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="5000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="15000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedPropertyAssociation.8"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>
           <ownedValue>
             <ownedValue xsi:type="aadl2:NamedValue">
@@ -2547,6 +2617,20 @@
           <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedThreadSubcomponent.3/@ownedPropertyAssociation.2"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="30000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="60000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedPropertyAssociation.9"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>
           <ownedValue>
             <ownedValue xsi:type="aadl2:NamedValue">
@@ -2691,6 +2775,20 @@
             </ownedValue>
           </ownedValue>
           <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedThreadSubcomponent.4/@ownedPropertyAssociation.2"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="1000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="5000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedPropertyAssociation.10"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>
@@ -2858,6 +2956,20 @@
             </ownedValue>
           </ownedValue>
           <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedThreadSubcomponent.5/@ownedPropertyAssociation.2"/>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
+          <property href="platform:/plugin/org.osate.contribution.sei/resources/properties/SEI.aadl#SEI.Response_Time"/>
+          <ownedValue>
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" value="20000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" value="85000">
+                <unit href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/AADL_Project.aadl#/0/@ownedPropertyType.16/@ownedLiteral.2"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+          <propertyAssociation href="../raspberry_software.aadl#/0/@ownedPublicSection/@ownedClassifier.10/@ownedPropertyAssociation.11"/>
         </ownedPropertyAssociation>
         <ownedPropertyAssociation xsi:type="instance:PropertyAssociationInstance">
           <property href="platform:/plugin/org.osate.aadl2.contrib/resources/properties/Predeclared_Property_Sets/Thread_Properties.aadl#Thread_Properties.Dispatch_Protocol"/>

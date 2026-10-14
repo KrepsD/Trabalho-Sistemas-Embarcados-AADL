@@ -1,0 +1,41 @@
+// Static budget checks only; runtime requirements remain separate.
+system requirements MobileRobotV5_ModelRAM for robot_system::robot.impl [
+	see goals MobileRobotV5_ModelRAM_Goals
+
+	requirement RaspberryBudgetReserve: "RaspberryBudgetReserve" [
+		see goal MobileRobotV5_ModelRAM_Goals.Operation
+		val capacity = this.nav_computer.rpi_ram#SEI::RAMCapacity
+		// Update this sum when adding or removing RAM budget holders.
+		val demand = this.nav_stack.bridge_task#SEI::RAMBudget
+			+ this.nav_stack.odom_task#SEI::RAMBudget
+			+ this.nav_stack.nav2_task#SEI::RAMBudget
+			+ this.nav_stack.slam_task#SEI::RAMBudget
+			+ this.nav_stack.integration_task#SEI::RAMBudget
+			+ this.nav_stack.jason_task#SEI::RAMBudget
+			+ this.chonos_ram_cost#SEI::RAMBudget
+			+ this.perception_ram_cost#SEI::RAMBudget
+			+ this.shared_runtime_ram_cost#SEI::RAMBudget
+		description "Declared Raspberry RAM budgets shall use at most 80 percent of the modeled capacity. This is not measured usable RAM or the 30-minute runtime requirement."
+		value predicate capacity > 0 Bytes and demand >= 0 Bytes
+			and demand <= capacity * 0.8
+	]
+
+	requirement ESP32BudgetFits: "ESP32BudgetFits" [
+		see goal MobileRobotV5_ModelRAM_Goals.Operation
+		val capacity = this.controller_board.esp_memory#SEI::RAMCapacity
+		// Update this sum when adding or removing RAM budget holders.
+		val demand = this.controller_firmware.control_task#SEI::RAMBudget
+			+ this.controller_firmware.imu_task#SEI::RAMBudget
+			+ this.controller_firmware.battery_task#SEI::RAMBudget
+			+ this.controller_firmware.telemetry_task#SEI::RAMBudget
+			+ this.controller_firmware.rx_task#SEI::RAMBudget
+			+ this.controller_firmware.command_guard_task#SEI::RAMBudget
+			+ this.esp_kernel_ram#SEI::RAMBudget
+			+ this.esp_driver_ram#SEI::RAMBudget
+			+ this.esp_communication_ram#SEI::RAMBudget
+			+ this.esp_heap_ram#SEI::RAMBudget
+		description "Declared ESP32 RAM budgets shall fit the assumed data-RAM pool. This is not a measured firmware footprint."
+		value predicate capacity > 0 Bytes and demand >= 0 Bytes
+			and demand <= capacity * 1.0
+	]
+]
