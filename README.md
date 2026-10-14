@@ -96,10 +96,7 @@ model elements they constrain. They are grouped into:
 
 Each requirement has an id, a natural-language description, and a `value predicate`
 that OSATE/ReqSpec-style tooling can compare against analysis results (e.g.
-`worstResponse <= deadlineLimit`). Registering a requirement does **not**
-automatically verify it — the computed values must still be checked against the
-OSATE analysis reports; this was done manually in this project by reading the
-generated reports in `instances/reports/`.
+`worstResponse <= deadlineLimit`). It can be automatically verified with the ALISA tool.
 
 Explicitly **out of scope**: total cost, battery autonomy, robot dimensions/mass,
 navigation accuracy, environmental operating conditions, and safety requirements
